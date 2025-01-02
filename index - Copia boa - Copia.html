@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Produtos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+      color: #333;
+    }
+    .product-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 250px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .product h3 {
+      font-size: 1.2em;
+      color: #333;
+    }
+    .product p {
+      font-size: 0.9em;
+      color: #666;
+      margin: 10px 0;
+    }
+    .product .price {
+      font-size: 1.1em;
+      color: #28a745;
+      font-weight: bold;
+    }
+    .product .category {
+      font-size: 0.9em;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Catálogo de Produtos</h1>
+  <div class="product-container" id="product-container">
+    <!-- Produtos serão inseridos aqui -->
+  </div>
+
+  <script>
+    // URL do Google Sheets com o proxy para evitar problemas de CORS
+    const googleSheetURL = "https://thingproxy.freeboard.io/fetch/https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
+
+    // Função para buscar e exibir os dados
+    fetch(googleSheetURL)
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText
+          .split("\n")          // Divide em linhas
+          .map(row => row.split(",")) // Divide cada linha em colunas
+          .filter(row => row.length === 5); // Garantir que cada linha tenha 5 colunas
+
+        console.log(rows);  // Adicionando um log para verificar os dados
+
+        renderProducts(rows);
+      })
+      .catch(error => console.error("Erro ao acessar o Google Sheets:", error));
+
+    // Função para renderizar os dados dos produtos
+    function renderProducts(data) {
+      const container = document.querySelector("#product-container");
+
+      // Garantir que o container esteja limpo antes de adicionar novos produtos
+      container.innerHTML = "";
+
+      data.forEach((row, index) => {
+        if (index === 0) return; // Ignorar o cabeçalho
+
+        const productDiv = document.createElement("div");
+        productDiv.classList.add("product");
+
+        // Imagem do Produto
+        const img = document.createElement("img");
+        img.src = row[0].trim(); // URL da imagem
+        img.alt = row[1].trim(); // Nome do produto como alt
+        productDiv.appendChild(img);
+
+        // Nome do Produto
+        const productName = document.createElement("h3");
+        productName.textContent = row[1].trim(); // Nome
+        productDiv.appendChild(productName);
+
+        // Descrição do Produto
+        const productDesc = document.createElement("p");
+        productDesc.textContent = row[2].trim(); // Descrição
+        productDiv.appendChild(productDesc);
+
+        // Preço do Produto
+        const productPrice = document.createElement("p");
+        productPrice.classList.add("price");
+        productPrice.textContent = row[3].trim(); // Preço
+        productDiv.appendChild(productPrice);
+
+        // Categoria do Produto
+        const productCategory = document.createElement("p");
+        productCategory.classList.add("category");
+        productCategory.textContent = row[4].trim(); // Categoria
+        productDiv.appendChild(productCategory);
+
+        // Adicionar o produto ao container
+        container.appendChild(productDiv);
+      });
+    }
+  </script>
+</body>
+</html>
