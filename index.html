@@ -142,7 +142,10 @@
       // Filtrando produtos pela categoria selecionada
       const filteredProducts = filterCategory === 'all' 
         ? products 
-        : products.filter(product => product.category.trim().toLowerCase() === filterCategory.toLowerCase());
+        : products.filter(product => {
+            // Comparação de categorias sem espaços extras e sem diferenciação de maiúsculas/minúsculas
+            return product.category.toLowerCase().trim() === filterCategory.toLowerCase().trim();
+        });
 
       // Exibir os produtos
       const productContainer = document.getElementById('product-container');
