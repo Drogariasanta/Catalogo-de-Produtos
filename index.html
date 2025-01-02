@@ -108,7 +108,8 @@
                     const products = parseCSV(data);
                     displayCategories(products);
                     displayProducts(products);
-                });
+                })
+                .catch(error => console.error('Erro ao carregar os produtos:', error));
         }
 
         // Função para analisar os dados CSV
@@ -116,7 +117,7 @@
             const lines = data.split('\n');
             const products = [];
 
-            // Ignorar cabeçalho
+            // Ignorar cabeçalho e analisar os dados
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].split(',');
 
