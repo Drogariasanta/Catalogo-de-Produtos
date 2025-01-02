@@ -1,7 +1,3 @@
----
-layout: default
----
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +6,6 @@ layout: default
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Catálogo de Produtos - Drogaria Santa Maria Pinheirinho</title>
     <style>
-        /* Estilos básicos */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
