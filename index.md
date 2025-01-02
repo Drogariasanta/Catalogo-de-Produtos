@@ -160,12 +160,20 @@
         const categoriaFiltro = document.querySelector('#categoriaFiltro');
         const categorias = new Set();
 
+        // Limpar a seção de produtos antes de adicionar
+        section.innerHTML = '';
+
         rows.forEach((row, index) => {
           if (index > 0) { // Ignorar a primeira linha (cabeçalho)
             const columns = row.split(',');
 
             // Adicionar as categorias no filtro (sem duplicatas)
-            categorias.add(columns[4]);
+            if (columns[4] && !categorias.has(columns[4])) {
+              categorias.add(columns[4]);
+
+              // Adicionar as categorias ao filtro
+              categoriaFiltro.innerHTML += `<option value="${columns[4]}">${columns[4]}</option>`;
+            }
 
             // Criar o HTML para cada produto
             const produtoHTML = `
@@ -181,11 +189,6 @@
             // Adicionar o produto à seção
             section.innerHTML += produtoHTML;
           }
-        });
-
-        // Adicionar as categorias ao filtro
-        categorias.forEach(categoria => {
-          categoriaFiltro.innerHTML += `<option value="${categoria}">${categoria}</option>`;
         });
 
         // Filtro por categoria
