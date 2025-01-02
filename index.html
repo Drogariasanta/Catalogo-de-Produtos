@@ -81,7 +81,7 @@
       color: white;
       text-align: center;
       padding: 10px;
-      position: fixed;
+      position: relative;
       width: 100%;
       bottom: 0;
     }
@@ -116,7 +116,7 @@
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv';
 
     // Função para carregar e exibir os produtos
-    async function loadProducts() {
+    async function loadProducts(filterCategory = 'all') {
       const response = await fetch(sheetUrl);
       const data = await response.text();
       const rows = data.split('\n').slice(1);
@@ -133,11 +133,16 @@
         };
       });
 
+      // Filtrando produtos pela categoria selecionada
+      const filteredProducts = filterCategory === 'all' 
+        ? products 
+        : products.filter(product => product.category === filterCategory);
+
       // Exibir os produtos
       const productContainer = document.getElementById('product-container');
       productContainer.innerHTML = '';
 
-      products.forEach(product => {
+      filteredProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
 
@@ -145,7 +150,7 @@
           <img src="${product.image}" alt="${product.name}">
           <h3>${product.name}</h3>
           <p>${product.description}</p>
-          <p><strong>${product.price}</strong></p>
+          <p><strong>${parseFloat(product.price).toFixed(2)}</strong></p>
           <a href="https://wa.me/35988490590?text=Oi, eu gostaria de saber mais sobre o produto ${product.name}" class="contact-button" target="_blank">Entrar em Contato</a>
         `;
 
