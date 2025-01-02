@@ -119,15 +119,15 @@
     async function loadProducts(filterCategory = 'all') {
       const response = await fetch(sheetUrl);
       const data = await response.text();
-      const rows = data.split('\n').slice(1);
+      const rows = data.split('\n').slice(1); // Ignorar o cabeçalho
 
       const products = rows.map(row => {
         const columns = row.split(',');
-        
+
         const image = columns[0]?.trim();
         const name = columns[1]?.trim();
         const description = columns[2]?.trim();
-        const price = columns[4]?.trim().replace('R$', '').trim();
+        const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim(); // Limpeza do preço
         const category = columns[6]?.trim();
 
         return {
