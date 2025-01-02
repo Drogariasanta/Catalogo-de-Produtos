@@ -6,137 +6,121 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Drogaria Santa Maria Pinheirinho</title>
   <style>
-    /* Resetando alguns estilos padrões do navegador */
+    /* Resetando estilos padrão */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* Estilos gerais */
+    /* Estilo geral */
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
       background-color: #f4f4f4;
       color: #333;
+      line-height: 1.6;
     }
 
+    /* Cabeçalho */
     header {
       background-color: #4CAF50;
       color: #fff;
-      padding: 20px 0;
       text-align: center;
+      padding: 20px;
     }
 
     header h1 {
       font-size: 2.5rem;
     }
 
+    header p {
+      font-size: 1rem;
+    }
+
+    /* Seção dos produtos */
     main {
-      padding: 20px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 20px auto;
+      padding: 20px;
     }
 
     h2 {
       text-align: center;
       margin-bottom: 20px;
+      font-size: 2rem;
     }
 
     #produtos {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
 
     .produto {
       background-color: #fff;
-      padding: 15px;
-      margin: 10px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 45%;
+      padding: 20px;
       text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .produto:hover {
+      transform: scale(1.05);
+    }
+
+    .produto img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
     }
 
     .produto h3 {
-      margin-bottom: 10px;
+      margin: 15px 0;
+      font-size: 1.5rem;
+    }
+
+    .produto p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
     }
 
     .produto a {
-      color: #4CAF50;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
       text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
 
     .produto a:hover {
-      text-decoration: underline;
+      background-color: #45a049;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: center;
-    }
-
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-
+    /* Rodapé */
     footer {
       background-color: #333;
       color: #fff;
-      padding: 10px 0;
       text-align: center;
-      margin-top: 20px;
+      padding: 10px 0;
+      margin-top: 30px;
     }
+
   </style>
 </head>
 <body>
   <header>
     <h1>Drogaria Santa Maria Pinheirinho</h1>
-    <p>Bem-vindo à nossa drogaria! Confira nossos produtos e entre em contato via WhatsApp.</p>
+    <p>Seu bem-estar é nossa prioridade. Confira nossos produtos e entre em contato!</p>
   </header>
 
   <main>
+    <h2>Catálogo de Produtos</h2>
     <section id="produtos">
-      <h2>Nosso Catálogo de Produtos</h2>
-      <!-- Exemplos de produtos -->
-      <div class="produto">
-        <h3>Produto 1</h3>
-        <p>Descrição do produto 1. <a href="https://wa.me/35988490590" target="_blank">Fale conosco no WhatsApp</a></p>
-      </div>
-      <div class="produto">
-        <h3>Produto 2</h3>
-        <p>Descrição do produto 2. <a href="https://wa.me/35988490590" target="_blank">Fale conosco no WhatsApp</a></p>
-      </div>
-    </section>
-
-    <section id="tabela-produtos">
-      <h2>Produtos Disponíveis (do Google Sheets)</h2>
-      <!-- Exibindo CSV de maneira simples -->
-      <table id="produtos-tabela">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Descrição</th>
-            <th>Preço</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Conteúdo será inserido aqui com JavaScript -->
-        </tbody>
-      </table>
+      <!-- Os produtos serão carregados aqui via JavaScript -->
     </section>
   </main>
 
@@ -145,25 +129,30 @@
   </footer>
 
   <script>
-    // Função para carregar e exibir o conteúdo do CSV
+    // Função para carregar os dados do CSV e exibir os produtos
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv')
       .then(response => response.text())
       .then(data => {
         const rows = data.split('\n');
-        const table = document.querySelector('#produtos-tabela tbody');
+        const section = document.querySelector('#produtos');
 
         rows.forEach((row, index) => {
           if (index > 0) { // Ignorar a primeira linha (cabeçalho)
             const columns = row.split(',');
-            const tr = document.createElement('tr');
 
-            columns.forEach(col => {
-              const td = document.createElement('td');
-              td.textContent = col;
-              tr.appendChild(td);
-            });
+            // Criar o HTML para cada produto
+            const produtoHTML = `
+              <div class="produto">
+                <img src="${columns[3]}" alt="${columns[0]}">
+                <h3>${columns[0]}</h3>
+                <p>${columns[1]}</p>
+                <p>Preço: ${columns[2]}</p>
+                <a href="https://wa.me/35988490590" target="_blank">Fale conosco no WhatsApp</a>
+              </div>
+            `;
 
-            table.appendChild(tr);
+            // Adicionar o produto à seção
+            section.innerHTML += produtoHTML;
           }
         });
       })
