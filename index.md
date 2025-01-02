@@ -49,6 +49,19 @@
       font-size: 2rem;
     }
 
+    /* Filtro de categorias */
+    #filtro {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #filtro select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
     #produtos {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -62,6 +75,7 @@
       padding: 20px;
       text-align: center;
       transition: transform 0.3s;
+      position: relative;
     }
 
     .produto:hover {
@@ -118,6 +132,15 @@
 
   <main>
     <h2>Catálogo de Produtos</h2>
+
+    <!-- Filtro de categorias -->
+    <div id="filtro">
+      <select id="categoriaFiltro">
+        <option value="">Selecione uma Categoria</option>
+        <!-- As opções de categorias serão carregadas via JavaScript -->
+      </select>
+    </div>
+
     <section id="produtos">
       <!-- Os produtos serão carregados aqui via JavaScript -->
     </section>
@@ -134,15 +157,20 @@
       .then(data => {
         const rows = data.split('\n');
         const section = document.querySelector('#produtos');
+        const categoriaFiltro = document.querySelector('#categoriaFiltro');
+        const categorias = new Set();
 
         rows.forEach((row, index) => {
           if (index > 0) { // Ignorar a primeira linha (cabeçalho)
             const columns = row.split(',');
 
+            // Adicionar as categorias no filtro (sem duplicatas)
+            categorias.add(columns[4]);
+
             // Criar o HTML para cada produto
             const produtoHTML = `
-              <div class="produto">
-                <img src="${columns[3]}" alt="${columns[0]}">
+              <div class="produto" data-categoria="${columns[4]}">
+                <img src="images/${columns[3]}" alt="${columns[0]}">
                 <h3>${columns[0]}</h3>
                 <p>${columns[1]}</p>
                 <p>Preço: ${columns[2]}</p>
@@ -153,6 +181,25 @@
             // Adicionar o produto à seção
             section.innerHTML += produtoHTML;
           }
+        });
+
+        // Adicionar as categorias ao filtro
+        categorias.forEach(categoria => {
+          categoriaFiltro.innerHTML += `<option value="${categoria}">${categoria}</option>`;
+        });
+
+        // Filtro por categoria
+        categoriaFiltro.addEventListener('change', function() {
+          const categoriaSelecionada = this.value;
+          const produtos = document.querySelectorAll('.produto');
+
+          produtos.forEach(produto => {
+            if (categoriaSelecionada === '' || produto.dataset.categoria === categoriaSelecionada) {
+              produto.style.display = 'block';
+            } else {
+              produto.style.display = 'none';
+            }
+          });
         });
       })
       .catch(error => console.error('Erro ao carregar o CSV:', error));
