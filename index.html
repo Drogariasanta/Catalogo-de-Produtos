@@ -128,7 +128,7 @@
         const name = columns[1]?.trim();
         const description = columns[2]?.trim();
         const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim(); // Limpeza do preço
-        const category = columns[6]?.trim();
+        const category = columns[6]?.trim(); // A categoria agora está na coluna G (índice 6)
 
         return {
           image,
