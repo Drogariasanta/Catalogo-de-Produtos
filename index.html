@@ -1,177 +1,209 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogaria Santa Maria Pinheirinho</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Drogaria Santa Maria Pinheirinho - Catálogo de Produtos</title>
     <style>
+        /* Estilos básicos para o layout */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa;
         }
 
         header {
-            background-color: #005b96;
+            background-color: #007bff;
             color: white;
-            padding: 10px;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        nav ul li {
-            display: inline;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 5px;
-        }
-
-        section#produtos {
             padding: 20px;
-            background-color: #f4f4f4;
+            text-align: center;
         }
 
-        .produto {
-            background-color: white;
+        h1 {
+            margin: 0;
+        }
+
+        nav {
+            background-color: #343a40;
+            color: white;
             padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        .produto img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
         }
 
-        #filtro-categorias {
-            margin-bottom: 20px;
+        nav a:hover {
+            text-decoration: underline;
         }
 
-        #produtos-lista {
+        .filters {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .filters select {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .product-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
+            padding: 0 20px;
         }
 
-        footer {
-            background-color: #333;
-            color: white;
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
             text-align: center;
-            padding: 10px;
-            margin-top: 20px;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .product h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .product p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .product span {
+            font-weight: bold;
+            color: #007bff;
         }
     </style>
 </head>
+
 <body>
+
     <header>
-        <div class="logo">
-            <h1>Drogaria Santa Maria Pinheirinho</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#produtos">Catálogo de Produtos</a></li>
-                <li><a href="#categorias">Categorias</a></li>
-            </ul>
-        </nav>
+        <h1>Drogaria Santa Maria Pinheirinho</h1>
+        <p>Catálogo de Produtos</p>
     </header>
 
-    <section id="produtos">
-        <h2>Catálogo de Produtos</h2>
-        <div id="filtro-categorias">
-            <label for="filtro-categoria">Filtrar por categoria:</label>
-            <select id="filtro-categoria">
-                <!-- As categorias serão carregadas dinamicamente aqui -->
-            </select>
-        </div>
-        <div id="produtos-lista">
-            <!-- Produtos serão carregados aqui -->
-        </div>
-    </section>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#">Contato</a>
+    </nav>
 
-    <footer>
-        <p>&copy; 2025 Drogaria Santa Maria Pinheirinho</p>
-    </footer>
+    <!-- Filtro de Categorias -->
+    <div class="filters">
+        <select id="categoryFilter">
+            <option value="">Selecione uma categoria</option>
+            <!-- As categorias serão carregadas aqui -->
+        </select>
+    </div>
+
+    <!-- Lista de Produtos -->
+    <div class="product-list" id="productList">
+        <!-- Os produtos serão carregados aqui -->
+    </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
-            fetch(url)
+        // Link do Google Sheets para o arquivo CSV
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv';
+
+        // Função para carregar a planilha e exibir os produtos
+        function loadProducts() {
+            fetch(sheetUrl)
                 .then(response => response.text())
                 .then(data => {
-                    const rows = data.split("\n").slice(1);  // Ignorar o cabeçalho
-                    const produtos = [];
-                    const categorias = new Set();
-
-                    rows.forEach(row => {
-                        const cols = row.split(",");
-                        const produto = {
-                            nome: cols[0], 
-                            categoria: cols[1], 
-                            descricao: cols[2], 
-                            preco: cols[3], 
-                            imagem: cols[4]  // Link direto da imagem
-                        };
-                        produtos.push(produto);
-                        categorias.add(produto.categoria);
-                    });
-
-                    // Adicionar categorias ao filtro
-                    const categoriaSelect = document.getElementById("filtro-categoria");
-                    categorias.forEach(categoria => {
-                        const option = document.createElement("option");
-                        option.value = categoria;
-                        option.textContent = categoria;
-                        categoriaSelect.appendChild(option);
-                    });
-
-                    // Exibir produtos
-                    function mostrarProdutos(categoriaFiltro = '') {
-                        const lista = document.getElementById("produtos-lista");
-                        lista.innerHTML = ''; // Limpar lista
-                        produtos.forEach(produto => {
-                            if (categoriaFiltro === '' || produto.categoria === categoriaFiltro) {
-                                const item = document.createElement("div");
-                                item.classList.add("produto");
-                                item.innerHTML = `
-                                    <img src="${produto.imagem}" alt="${produto.nome}">
-                                    <h3>${produto.nome}</h3>
-                                    <p>${produto.descricao}</p>
-                                    <p><strong>Preço:</strong> R$ ${produto.preco}</p>
-                                `;
-                                lista.appendChild(item);
-                            }
-                        });
-                    }
-
-                    // Carregar os produtos ao selecionar uma categoria
-                    categoriaSelect.addEventListener("change", function () {
-                        mostrarProdutos(this.value);
-                    });
-
-                    // Inicializar com todos os produtos
-                    mostrarProdutos();
-
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar os dados:", error);
+                    const products = parseCSV(data);
+                    displayCategories(products);
+                    displayProducts(products);
                 });
-        });
+        }
+
+        // Função para analisar os dados CSV
+        function parseCSV(data) {
+            const lines = data.split('\n');
+            const products = [];
+
+            // Ignorar cabeçalho
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].split(',');
+
+                if (line.length === 5) {
+                    const product = {
+                        image: line[0].trim(),
+                        name: line[1].trim(),
+                        description: line[2].trim(),
+                        price: line[3].trim(),
+                        category: line[4].trim(),
+                    };
+                    products.push(product);
+                }
+            }
+
+            return products;
+        }
+
+        // Função para exibir categorias
+        function displayCategories(products) {
+            const categories = new Set(products.map(product => product.category));
+            const categoryFilter = document.getElementById('categoryFilter');
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+
+            categoryFilter.addEventListener('change', (e) => {
+                const filteredCategory = e.target.value;
+                displayProducts(products, filteredCategory);
+            });
+        }
+
+        // Função para exibir os produtos
+        function displayProducts(products, categoryFilter = '') {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+
+            const filteredProducts = categoryFilter ? 
+                products.filter(product => product.category === categoryFilter) : products;
+
+            filteredProducts.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.classList.add('product');
+
+                const image = product.image.startsWith('http') ? product.image : 'https://toymania.vtexassets.com/arquivos/ids/997240-800-auto?v=638599556463830000&width=800&height=auto&aspect=true';
+                
+                productElement.innerHTML = `
+                    <img src="${image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p><span>${product.price}</span></p>
+                `;
+
+                productList.appendChild(productElement);
+            });
+        }
+
+        // Carregar os produtos quando a página carregar
+        window.onload = loadProducts;
     </script>
+
 </body>
+
 </html>
