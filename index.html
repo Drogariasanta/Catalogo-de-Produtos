@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .product {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .product-item {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-item h3 {
+            margin: 10px 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .product-item p {
+            font-size: 1em;
+            color: #777;
+        }
+
+        .product-item .price {
+            font-size: 1.2em;
+            color: #28a745;
+            margin: 10px 0;
+        }
+
+        .category-filter {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .category-filter select {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-button {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .contact-button:hover {
+            background-color: #128c7e;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Catálogo de Produtos</h1>
+    </header>
+
+    <div class="category-filter">
+        <label for="category">Filtrar por categoria:</label>
+        <select id="category" onchange="filterByCategory()">
+            <option value="">Todas as Categorias</option>
+            <option value="Jogos">Jogos</option>
+            <option value="Bonecas">Bonecas</option>
+            <option value="Eletrônicos">Eletrônicos</option>
+        </select>
+    </div>
+
+    <div class="product" id="product-list">
+        <!-- Os produtos serão carregados aqui -->
+    </div>
+
+    <button class="contact-button" onclick="openWhatsApp()">Entrar em Contato via WhatsApp</button>
+
+    <script>
+        // Função para carregar dados da planilha CSV
+        function loadProducts() {
+            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv')
+                .then(response => response.text())
+                .then(data => {
+                    const products = parseCSV(data);
+                    displayProducts(products);
+                })
+                .catch(error => console.error('Erro ao acessar o Google Sheets:', error));
+        }
+
+        // Função para analisar os dados CSV
+        function parseCSV(data) {
+            const lines = data.split('\n');
+            const result = [];
+
+            // Ignorar o cabeçalho da planilha
+            for (let i = 1; i < lines.length; i++) {
+                const row = lines[i].split(',');
+
+                if (row.length === 5) {
+                    result.push({
+                        imagem: row[0],
+                        nome: row[1],
+                        descricao: row[2],
+                        preco: row[3],
+                        categoria: row[4]
+                    });
+                }
+            }
+            return result;
+        }
+
+        // Função para exibir os produtos na página
+        function displayProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+
+            products.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.dataset.category = product.categoria;
+
+                productItem.innerHTML = `
+                    <img src="${product.imagem}" alt="${product.nome}">
+                    <h3>${product.nome}</h3>
+                    <p>${product.descricao}</p>
+                    <p class="price">${product.preco}</p>
+                `;
+
+                productList.appendChild(productItem);
+            });
+        }
+
+        // Função para filtrar produtos pela categoria selecionada
+        function filterByCategory() {
+            const selectedCategory = document.getElementById('category').value;
+            const productItems = document.querySelectorAll('.product-item');
+
+            productItems.forEach(item => {
+                if (selectedCategory === '' || item.dataset.category === selectedCategory) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Função para abrir o WhatsApp
+        function openWhatsApp() {
+            window.open('https://wa.me/35988490590', '_blank');
+        }
+
+        // Carregar os produtos ao carregar a página
+        window.onload = loadProducts;
+    </script>
+
+</body>
+</html>
