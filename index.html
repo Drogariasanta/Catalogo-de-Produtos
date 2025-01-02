@@ -97,6 +97,9 @@
     <label for="category">Filtrar por categoria:</label>
     <select id="category">
       <option value="all">Todos</option>
+      <option value="Jogos">Jogos</option>
+      <option value="Bonecas">Bonecas</option>
+      <option value="Eletrônicos">Eletrônicos</option>
     </select>
   </div>
 
@@ -109,74 +112,63 @@
   </footer>
 
   <script>
+    // Substitua o link da sua planilha aqui
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv';
 
-    async function loadCategories(products) {
-      const categoryFilter = document.getElementById('category');
-      const categories = [...new Set(products.map(product => product.category).filter(category => category))];
-
-      categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categoryFilter.appendChild(option);
-      });
-    }
-
+    // Função para carregar e exibir os produtos
     async function loadProducts(filterCategory = 'all') {
       const response = await fetch(sheetUrl);
       const data = await response.text();
-      const rows = data.split('\n').slice(1);
+      const rows = data.split('\n').slice(1); // Ignorar o cabeçalho
 
-      const products = rows
-        .map(row => {
-          const columns = row.split(',');
-          const image = columns[0]?.trim();
-          const name = columns[1]?.trim();
-          const description = columns[2]?.trim();
-          const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim();
-          const category = columns[6]?.trim();
+      const products = rows.map(row => {
+        const columns = row.split(',');
 
-          return {
-            image,
-            name,
-            description,
-            price: price ? R$ ${parseFloat(price).toFixed(2)} : 'Preço indisponível',
-            category
-          };
-        })
-        .filter(product => product.name && product.category); // Remove produtos sem nome ou categoria
+        const image = columns[0]?.trim();
+        const name = columns[1]?.trim();
+        const description = columns[2]?.trim();
+        const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim(); // Limpeza do preço
+        const category = columns[6]?.trim(); // A categoria agora está na coluna G (índice 6)
 
-      // Carregar categorias na primeira vez
-      if (filterCategory === 'all') {
-        await loadCategories(products);
-      }
+        return {
+          image,
+          name,
+          description,
+          price: price ? R$ ${parseFloat(price).toFixed(2)} : 'Preço indisponível',
+          category
+        };
+      });
 
+      // Filtrando produtos pela categoria selecionada
       const filteredProducts = filterCategory === 'all' 
         ? products 
-        : products.filter(product => product.category.toLowerCase() === filterCategory.toLowerCase());
+        : products.filter(product => {
+            // Comparação de categorias sem espaços extras e sem diferenciação de maiúsculas/minúsculas
+            return product.category.toLowerCase().trim() === filterCategory.toLowerCase().trim();
+        });
 
+      // Exibir os produtos
       const productContainer = document.getElementById('product-container');
       productContainer.innerHTML = '';
 
       if (filteredProducts.length === 0) {
         productContainer.innerHTML = '<p>Nenhum produto encontrado para esta categoria.</p>';
-      } else {
-        filteredProducts.forEach(product => {
-          const productCard = document.createElement('div');
-          productCard.classList.add('product-card');
-
-          productCard.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p>${product.description}</p>
-            <p><strong>${product.price}</strong></p>
-            <a href="https://wa.me/35988490590?text=Oi, eu gostaria de saber mais sobre o produto ${product.name}" class="contact-button" target="_blank">Entrar em Contato</a>
-          `;
-
-          productContainer.appendChild(productCard);
-        });
       }
+
+      filteredProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+
+        productCard.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <p><strong>${product.price}</strong></p>
+          <a href="https://wa.me/35988490590?text=Oi, eu gostaria de saber mais sobre o produto ${product.name}" class="contact-button" target="_blank">Entrar em Contato</a>
+        `;
+
+        productContainer.appendChild(productCard);
+      });
     }
 
     // Carregar os produtos inicialmente
