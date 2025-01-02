@@ -113,7 +113,7 @@
 
     async function loadCategories(products) {
       const categoryFilter = document.getElementById('category');
-      const categories = new Set(products.map(product => product.category).filter(Boolean)); // Categorias únicas e válidas
+      const categories = [...new Set(products.map(product => product.category).filter(category => category))];
 
       categories.forEach(category => {
         const option = document.createElement('option');
@@ -128,53 +128,55 @@
       const data = await response.text();
       const rows = data.split('\n').slice(1);
 
-      const products = rows.map(row => {
-        const columns = row.split(',');
-        const image = columns[0]?.trim();
-        const name = columns[1]?.trim();
-        const description = columns[2]?.trim();
-        const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim();
-        const category = columns[6]?.trim(); // Categoria está na coluna G (índice 6)
+      const products = rows
+        .map(row => {
+          const columns = row.split(',');
+          const image = columns[0]?.trim();
+          const name = columns[1]?.trim();
+          const description = columns[2]?.trim();
+          const price = columns[4]?.trim().replace('R$', '').replace('"', '').trim();
+          const category = columns[6]?.trim();
 
-        return {
-          image,
-          name,
-          description,
-          price: price ? R$ ${parseFloat(price).toFixed(2)} : 'Preço indisponível',
-          category
-        };
-      });
+          return {
+            image,
+            name,
+            description,
+            price: price ? R$ ${parseFloat(price).toFixed(2)} : 'Preço indisponível',
+            category
+          };
+        })
+        .filter(product => product.name && product.category); // Remove produtos sem nome ou categoria
 
-      // Carregar categorias automaticamente na primeira execução
+      // Carregar categorias na primeira vez
       if (filterCategory === 'all') {
         await loadCategories(products);
       }
 
       const filteredProducts = filterCategory === 'all' 
         ? products 
-        : products.filter(product => product.category.toLowerCase().trim() === filterCategory.toLowerCase().trim());
+        : products.filter(product => product.category.toLowerCase() === filterCategory.toLowerCase());
 
       const productContainer = document.getElementById('product-container');
       productContainer.innerHTML = '';
 
       if (filteredProducts.length === 0) {
         productContainer.innerHTML = '<p>Nenhum produto encontrado para esta categoria.</p>';
+      } else {
+        filteredProducts.forEach(product => {
+          const productCard = document.createElement('div');
+          productCard.classList.add('product-card');
+
+          productCard.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p><strong>${product.price}</strong></p>
+            <a href="https://wa.me/35988490590?text=Oi, eu gostaria de saber mais sobre o produto ${product.name}" class="contact-button" target="_blank">Entrar em Contato</a>
+          `;
+
+          productContainer.appendChild(productCard);
+        });
       }
-
-      filteredProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-
-        productCard.innerHTML = `
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>${product.description}</p>
-          <p><strong>${product.price}</strong></p>
-          <a href="https://wa.me/35988490590?text=Oi, eu gostaria de saber mais sobre o produto ${product.name}" class="contact-button" target="_blank">Entrar em Contato</a>
-        `;
-
-        productContainer.appendChild(productCard);
-      });
     }
 
     // Carregar os produtos inicialmente
