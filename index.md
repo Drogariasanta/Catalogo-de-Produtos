@@ -25,26 +25,28 @@
       background-color: #4CAF50;
       color: #fff;
       padding: 20px 0;
+      text-align: center;
     }
 
     header h1 {
-      text-align: center;
       font-size: 2.5rem;
-    }
-
-    header p {
-      text-align: center;
-      font-size: 1.2rem;
     }
 
     main {
       padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     #produtos {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: space-between;
     }
 
     .produto {
@@ -70,14 +72,6 @@
       text-decoration: underline;
     }
 
-    footer {
-      background-color: #333;
-      color: #fff;
-      padding: 10px 0;
-      text-align: center;
-    }
-
-    /* Estilos para a tabela do Google Sheets */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -89,22 +83,29 @@
     }
 
     th, td {
-      padding: 8px;
-      text-align: left;
+      padding: 12px;
+      text-align: center;
     }
 
-    th {
-      background-color: #4CAF50;
-      color: white;
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <h1>Drogaria Santa Maria Pinheirinho</h1>
-      <p>Bem-vindo à nossa drogaria! Confira nossos produtos e entre em contato via WhatsApp.</p>
-    </div>
+    <h1>Drogaria Santa Maria Pinheirinho</h1>
+    <p>Bem-vindo à nossa drogaria! Confira nossos produtos e entre em contato via WhatsApp.</p>
   </header>
 
   <main>
@@ -123,16 +124,50 @@
 
     <section id="tabela-produtos">
       <h2>Produtos Disponíveis (do Google Sheets)</h2>
-      <!-- Link do Google Sheets embutido -->
-      <p>Abaixo estão alguns dados que foram extraídos do Google Sheets:</p>
-      <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSzFS_yXXXjsR9gP1r_Bs5X4C9tQqKgZofUb_oN2f9qV4iLZv4GG7CddMIq_/pubhtml?gid=0&single=true" width="100%" height="600px"></iframe>
+      <!-- Exibindo CSV de maneira simples -->
+      <table id="produtos-tabela">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Conteúdo será inserido aqui com JavaScript -->
+        </tbody>
+      </table>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      <p>&copy; 2025 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.</p>
-    </div>
+    <p>&copy; 2025 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.</p>
   </footer>
+
+  <script>
+    // Função para carregar e exibir o conteúdo do CSV
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv')
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split('\n');
+        const table = document.querySelector('#produtos-tabela tbody');
+
+        rows.forEach((row, index) => {
+          if (index > 0) { // Ignorar a primeira linha (cabeçalho)
+            const columns = row.split(',');
+            const tr = document.createElement('tr');
+
+            columns.forEach(col => {
+              const td = document.createElement('td');
+              td.textContent = col;
+              tr.appendChild(td);
+            });
+
+            table.appendChild(tr);
+          }
+        });
+      })
+      .catch(error => console.error('Erro ao carregar o CSV:', error));
+  </script>
 </body>
 </html>
