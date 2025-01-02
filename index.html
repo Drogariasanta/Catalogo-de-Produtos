@@ -5,6 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #005b96;
+            color: white;
+            padding: 10px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px;
+        }
+
+        section#produtos {
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .produto {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .produto img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        #filtro-categorias {
+            margin-bottom: 20px;
+        }
+
+        #produtos-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -13,7 +85,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#produtos">Catálogo de Produtos</a></li>
                 <li><a href="#categorias">Categorias</a></li>
             </ul>
         </nav>
@@ -45,7 +117,7 @@
                     const rows = data.split("\n").slice(1);  // Ignorar o cabeçalho
                     const produtos = [];
                     const categorias = new Set();
-                    
+
                     rows.forEach(row => {
                         const cols = row.split(",");
                         const produto = {
