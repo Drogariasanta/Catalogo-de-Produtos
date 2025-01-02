@@ -122,7 +122,7 @@
       const rows = data.split('\n').slice(1);
 
       const products = rows.map(row => {
-        const [image, name, description, price, category] = row.split(',');
+        const [image, name, description, , price, category] = row.split(',');
 
         return {
           image: image.trim(),
