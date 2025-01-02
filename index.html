@@ -4,17 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Produtos</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos para a estrutura e layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #filter-categories {
+            margin: 20px;
+            text-align: center;
+        }
+        #filter-categories select {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+        #productList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
 </head>
 <body>
+
     <header>
+        <h1>Catálogo de Produtos</h1>
         <nav>
             <ul>
                 <li><a href="#home">Início</a></li>
                 <li><a href="#contact">Contato</a></li>
             </ul>
         </nav>
-        <h1>Catálogo de Produtos</h1>
     </header>
 
     <div id="filter-categories">
