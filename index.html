@@ -142,7 +142,7 @@
       // Filtrando produtos pela categoria selecionada
       const filteredProducts = filterCategory === 'all' 
         ? products 
-        : products.filter(product => product.category === filterCategory);
+        : products.filter(product => product.category.trim().toLowerCase() === filterCategory.toLowerCase());
 
       // Exibir os produtos
       const productContainer = document.getElementById('product-container');
