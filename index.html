@@ -50,6 +50,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             width: calc(33.33% - 40px); /* 3 produtos por linha em telas grandes */
             display: inline-block;
+            box-sizing: border-box;
         }
         .product:hover {
             transform: translateY(-5px);
@@ -111,7 +112,8 @@
 
         @media (max-width: 480px) {
             .product {
-                width: 100%; /* Exibe 1 produto por linha em telas pequenas */
+                width: calc(100% - 40px); /* Exibe 1 produto por linha em telas pequenas */
+                margin: 10px 0;
             }
             header {
                 font-size: 1.5em;
@@ -156,7 +158,7 @@
 
     <div class="container">
         <h2 id="categoryTitle">Todos os Produtos</h2>
-        <div id="productContainer">
+        <div id="productContainer" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <!-- Produtos serão carregados dinamicamente -->
         </div>
     </div>
@@ -235,7 +237,7 @@
 
             products.forEach(product => {
                 product.style.display = selectedCategory === "todos" || product.classList.contains(selectedCategory)
-                    ? "inline-block"
+                    ? "block"
                     : "none";
             });
 
