@@ -45,8 +45,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin: 15px;
-            display: inline-block;
-            width: calc(48% - 30px);
             text-align: center;
             vertical-align: top;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -103,29 +101,18 @@
         }
 
         /* Responsividade */
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .product {
-                width: calc(45% - 30px);
-                margin: 10px auto;
-            }
-            header {
-                font-size: 1.5em;
+                width: calc(50% - 30px); /* Exibe 2 produtos por linha em telas grandes */
+                display: inline-block;
             }
         }
-        @media (max-width: 480px) {
-            nav select {
-                width: 100%;
-            }
-            header {
-                font-size: 1.8em;
-                padding: 15px 0;
-            }
-            nav select {
-                font-size: 0.9em;
-            }
+
+        @media (max-width: 767px) {
             .product {
-                width: calc(100% - 30px);
-                margin: 10px auto;
+                width: 100%; /* Exibe 1 produto por linha em telas menores */
+                display: block;
+                margin: 10px 0;
             }
         }
 
