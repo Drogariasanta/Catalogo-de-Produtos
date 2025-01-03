@@ -5,171 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
-        * {
+        /* Estilos base */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e9;
+            color: #333;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #e8f5e9;
-            color: #333;
-        }
-
         header {
-            background: #2e7d32;
+            background-color: #388e3c;
             color: white;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            font-size: 2em;
-            letter-spacing: 1px;
+            font-size: 1.8em;
         }
-
         nav {
-            display: flex;
-            justify-content: center;
-            background: #43a047;
+            text-align: center;
+            background-color: #43a047;
             padding: 10px;
-            flex-wrap: wrap;
         }
-
         nav select {
-            display: none;
             padding: 10px;
             font-size: 1em;
+            border: none;
             border-radius: 5px;
-            border: 1px solid #2e7d32;
-        }
-
-        nav a {
+            background-color: #66bb6a;
             color: white;
-            text-decoration: none;
-            margin: 5px 10px;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background 0.3s;
         }
-
-        nav a:hover, nav a.active {
-            background: #2e7d32;
-        }
-
         .container {
-            padding: 20px;
             max-width: 1200px;
             margin: auto;
+            padding: 20px;
         }
-
-        .product-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
         .product {
             background: white;
+            border: 1px solid #ddd;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            display: inline-block;
+            width: calc(48% - 30px);
             text-align: center;
-            padding: 15px;
-            width: 100%;
-            max-width: 250px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            vertical-align: top;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .product:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
-
         .product img {
-            width: 100%;
+            max-width: 100%;
             height: auto;
-            border-radius: 8px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
-
         .product h3 {
+            font-size: 1.1em;
             margin: 10px 0;
-            font-size: 1.2em;
+            color: #333;
         }
-
         .product p {
-            color: #555;
+            color: #666;
             font-size: 0.9em;
             margin-bottom: 10px;
         }
-
-        .product .price {
-            font-size: 1.3em;
+        .price {
+            color: #43a047;
             font-weight: bold;
-            color: #2e7d32;
+            font-size: 1.2em;
             margin: 10px 0;
         }
-
-        .product .buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 10px;
+        .button-group {
+            margin-top: 15px;
         }
-
-        .product button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #43a047;
+        .button-group .btn {
+            background-color: #2e7d32;
             color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
             font-size: 0.9em;
+            margin: 5px;
+            display: inline-block;
             cursor: pointer;
-            transition: background 0.3s;
         }
-
-        .product button:hover {
-            background: #2e7d32;
+        .button-group .btn:hover {
+            background-color: #1b5e20;
         }
-
         footer {
-            background: #333;
+            background-color: #388e3c;
             color: white;
             text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
+            padding: 15px 0;
             font-size: 0.9em;
         }
 
+        /* Responsividade */
         @media (max-width: 768px) {
-            nav a {
-                display: none;
-            }
-
-            nav select {
-                display: block;
-                margin: auto;
-            }
-
-            .product-container {
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
             .product {
-                max-width: 90%;
+                width: calc(100% - 30px);
+                margin: 10px auto;
             }
-
             header {
                 font-size: 1.5em;
             }
-
+        }
+        @media (max-width: 480px) {
             nav select {
-                font-size: 0.9em;
-            }
-
-            footer {
-                font-size: 0.8em;
+                width: 100%;
             }
         }
     </style>
@@ -180,82 +125,135 @@
     </header>
 
     <nav>
-        <a href="#" class="active" data-category="todos">Todos</a>
-        <a href="#" data-category="Jogos">Jogos</a>
-        <a href="#" data-category="Bonecas">Bonecas</a>
-        <a href="#" data-category="Eletrônicos">Eletrônicos</a>
-        <select onchange="filterCategory(this.value)">
-            <option value="todos">Todos</option>
-            <option value="Jogos">Jogos</option>
-            <option value="Bonecas">Bonecas</option>
-            <option value="Eletrônicos">Eletrônicos</option>
+        <label for="categoryFilter" style="color: white; font-size: 1em; margin-right: 10px;">Selecione uma Categoria:</label>
+        <select id="categoryFilter" onchange="filterByCategory()">
+            <!-- Categorias serão carregadas dinamicamente -->
         </select>
     </nav>
 
     <div class="container">
-        <div class="product-container">
-            <!-- Os produtos serão carregados dinamicamente aqui -->
+        <h2 id="categoryTitle">Todos os Produtos</h2>
+        <div id="productContainer">
+            <!-- Produtos serão carregados dinamicamente -->
         </div>
     </div>
 
+    <div class="container" style="text-align: center; margin-top: 20px;">
+        <button id="contactButton" onclick="contactWhatsApp()" style="padding: 15px; font-size: 1em; background-color: #388e3c; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Entrar em Contato com a Lista
+        </button>
+    </div>
+
     <footer>
-        © 2025 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
+        © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
 
     <script>
-        const products = [
-            {
-                img: "images/imagem1.jpg",
-                name: "Kit Jogo Alquimia",
-                desc: "Explore a ciência com 45 experiências fascinantes!",
-                price: "R$ 157,99",
-                category: "Jogos"
-            },
-            // Adicione outros produtos aqui
-        ];
+        const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
+        let wishlist = [];
 
-        function renderProducts(category) {
-            const container = document.querySelector('.product-container');
-            container.innerHTML = '';
+        async function fetchData() {
+            const response = await fetch(spreadsheetUrl);
+            const data = await response.text();
+            return parseCSV(data);
+        }
 
-            const filteredProducts = category === 'todos' ? products : products.filter(p => p.category === category);
-
-            filteredProducts.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product');
-
-                productDiv.innerHTML = `
-                    <img src="${product.img}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <p>${product.desc}</p>
-                    <div class="price">${product.price}</div>
-                    <div class="buttons">
-                        <button onclick="addToList('${product.name}')">Adicionar à Lista</button>
-                        <button onclick="contact('${product.name}')">Entrar em Contato</button>
-                    </div>
-                `;
-
-                container.appendChild(productDiv);
+        function parseCSV(data) {
+            const rows = data.split("\n");
+            const headers = rows[0].split(",");
+            return rows.slice(1).map(row => {
+                const values = row.split(",");
+                return headers.reduce((acc, header, index) => {
+                    acc[header.trim()] = values[index]?.trim();
+                    return acc;
+                }, {});
             });
         }
 
-        function filterCategory(category) {
-            renderProducts(category);
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            document.querySelector(`nav a[data-category="${category}"]`).classList.add('active');
+        function populateCategories(products) {
+            const categoryFilter = document.getElementById("categoryFilter");
+            const uniqueCategories = new Set(products.map(p => p["Categoria"]));
+
+            categoryFilter.innerHTML = `<option value="todos">Todos</option>`;
+
+            uniqueCategories.forEach(category => {
+                if (category) {
+                    categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+                }
+            });
         }
 
-        function addToList(productName) {
-            alert(`${productName} adicionado à sua lista!`);
-            // Aqui você pode implementar o armazenamento da lista
+        function populateProducts(products) {
+            const productContainer = document.getElementById("productContainer");
+            productContainer.innerHTML = "";
+
+            products.forEach(product => {
+                if (product["Nome do Produto"] && product["Categoria"]) {
+                    const productElement = `
+                        <div class="product todos ${product["Categoria"]}">
+                            <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
+                            <h3>${product["Nome do Produto"]}</h3>
+                            <p>${product["Descrição do Produto"]}</p>
+                            <div class="price">${product["Preço"]}</div>
+                            <div class="button-group">
+                                <button class="btn" onclick="addToWishlist('${product["Nome do Produto"]}')">Adicionar à Lista</button>
+                                <button class="btn" onclick="contactSingleProduct('${product["Nome do Produto"]}')">Contato</button>
+                            </div>
+                        </div>
+                    `;
+                    productContainer.innerHTML += productElement;
+                }
+            });
         }
 
-        function contact(productName) {
-            const url = `https://wa.me/35988490590?text=Ol%C3%A1,%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre:%20${encodeURIComponent(productName)}`;
-            window.open(url, '_blank');
+        function filterByCategory() {
+            const selectedCategory = document.getElementById("categoryFilter").value;
+            const products = document.querySelectorAll(".product");
+
+            products.forEach(product => {
+                product.style.display = selectedCategory === "todos" || product.classList.contains(selectedCategory)
+                    ? "inline-block"
+                    : "none";
+            });
+
+            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
+                ? "Todos os Produtos"
+                : selectedCategory;
         }
 
-        renderProducts('todos');
+        function addToWishlist(productName) {
+            if (!wishlist.includes(productName)) {
+                wishlist.push(productName);
+                alert(`"${productName}" foi adicionado à sua lista!`);
+            } else {
+                alert(`"${productName}" já está na sua lista!`);
+            }
+        }
+
+        function contactSingleProduct(productName) {
+            const message = `Olá, gostaria de saber mais sobre o produto: ${productName}`;
+            const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
+            window.open(whatsappLink, "_blank");
+        }
+
+        function contactWhatsApp() {
+            if (wishlist.length === 0) {
+                alert("Sua lista está vazia. Adicione produtos antes de entrar em contato.");
+                return;
+            }
+            const message = `Olá, gostaria de saber mais sobre os seguintes produtos:\n\n${wishlist.join("\n")}`;
+            const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
+            window.open(whatsappLink, "_blank");
+        }
+
+        async function init() {
+            const products = await fetchData();
+            populateCategories(products);
+            populateProducts(products);
+            filterByCategory();
+        }
+
+        init();
     </script>
 </body>
 </html>
