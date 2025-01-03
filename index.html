@@ -105,7 +105,7 @@
         /* Responsividade */
         @media (max-width: 768px) {
             .product {
-                width: calc(100% - 30px);
+                width: calc(45% - 30px);
                 margin: 10px auto;
             }
             header {
@@ -116,6 +116,35 @@
             nav select {
                 width: 100%;
             }
+            header {
+                font-size: 1.8em;
+                padding: 15px 0;
+            }
+            nav select {
+                font-size: 0.9em;
+            }
+            .product {
+                width: calc(100% - 30px);
+                margin: 10px auto;
+            }
+        }
+
+        /* Responsividade para navegação */
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        nav a:hover {
+            background: #005fa3;
+        }
+
+        .active {
+            background-color: #005fa3;
         }
     </style>
 </head>
@@ -241,19 +270,16 @@
                 alert("Sua lista está vazia. Adicione produtos antes de entrar em contato.");
                 return;
             }
-            const message = `Olá, gostaria de saber mais sobre os seguintes produtos:\n\n${wishlist.join("\n")}`;
+            const wishlistMessage = wishlist.join("\n");
+            const message = `Olá, gostaria de saber mais sobre os seguintes produtos:\n\n${wishlistMessage}`;
             const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
             window.open(whatsappLink, "_blank");
         }
 
-        async function init() {
-            const products = await fetchData();
+        fetchData().then(products => {
             populateCategories(products);
             populateProducts(products);
-            filterByCategory();
-        }
-
-        init();
+        });
     </script>
 </body>
 </html>
