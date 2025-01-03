@@ -48,6 +48,8 @@
             text-align: center;
             vertical-align: top;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%; /* Define que os produtos ocuparão 100% da largura por padrão */
+            display: inline-block;
         }
         .product:hover {
             transform: translateY(-5px);
@@ -104,15 +106,12 @@
         @media (min-width: 768px) {
             .product {
                 width: calc(50% - 30px); /* Exibe 2 produtos por linha em telas grandes */
-                display: inline-block;
             }
         }
 
         @media (max-width: 767px) {
             .product {
-                width: 100%; /* Exibe 1 produto por linha em telas menores */
-                display: block;
-                margin: 10px 0;
+                width: 100%; /* Exibe 1 produto por linha em telas pequenas */
             }
         }
 
