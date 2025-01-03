@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
+        /* Estilos base */
         body {
             font-family: Arial, sans-serif;
             background-color: #e8f5e9; /* Verde claro */
@@ -17,12 +18,12 @@
             color: white;
             padding: 20px;
             text-align: center;
-            font-size: 2.5em;
+            font-size: 2em;
         }
         nav {
             text-align: center;
             background-color: #43a047; /* Verde médio */
-            padding: 15px;
+            padding: 10px;
         }
         nav select {
             padding: 10px;
@@ -57,6 +58,7 @@
         .product img {
             max-width: 100%;
             height: auto;
+            border-radius: 5px;
         }
         .product h3 {
             font-size: 1.2em;
@@ -92,14 +94,26 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
+
+        /* Responsividade */
         @media (max-width: 768px) {
             .product {
                 width: calc(45% - 20px);
+            }
+            header {
+                font-size: 1.5em;
             }
         }
         @media (max-width: 480px) {
             .product {
                 width: calc(100% - 20px);
+            }
+            nav select {
+                width: 100%;
+            }
+            .product img {
+                height: 150px;
+                object-fit: cover;
             }
         }
     </style>
@@ -167,13 +181,14 @@
 
             products.forEach(product => {
                 if (product["Nome do Produto"] && product["Categoria"]) {
+                    const whatsappMessage = encodeURIComponent(`Olá, gostaria de saber mais sobre o produto: ${product["Nome do Produto"]}`);
                     const productElement = `
                         <div class="product todos ${product["Categoria"]}">
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
                             <h3>${product["Nome do Produto"]}</h3>
                             <p>${product["Descrição do Produto"]}</p>
                             <div class="price">${product["Preço"]}</div>
-                            <a href="https://wa.me/35988490590" target="_blank" class="contact-button">Entrar em Contato</a>
+                            <a href="https://wa.me/35988490590?text=${whatsappMessage}" target="_blank" class="contact-button">Entrar em Contato</a>
                         </div>
                     `;
                     productContainer.innerHTML += productElement;
