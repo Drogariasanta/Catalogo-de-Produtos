@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
-    <title>Catálogo de Produtos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
         /* Estilos base */
         body {
@@ -14,26 +14,29 @@
             padding: 0;
         }
         header {
-            background-color: #388e3c;
-            color: white;
+            background-color: white; /* Fundo branco */
             padding: 20px;
             text-align: center;
-            font-size: 1.8em;
-            position: relative;
+            overflow: hidden; /* Impede que a imagem saia da área do cabeçalho */
         }
-
         header img {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            height: 150px; /* Aumentei a altura para 150px */
-            width: 250px; /* Aumentei a largura para 250px */
+            max-width: 100%; /* Limita a largura para 100% do cabeçalho */
+            height: auto; /* Ajusta a altura automaticamente para manter a proporção */
+            max-height: 100px; /* Limita a altura máxima da imagem */
+            object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
+            transform: scale(5); /* Aumenta o zoom para 500% */
         }
-
+        /* Ajustes para dispositivos móveis */
+        @media (max-width: 768px) {
+            header img {
+                transform: scale(2); /* Reduz o zoom para 200% em telas menores */
+            }
+        }
         nav {
             text-align: center;
             background-color: #43a047;
             padding: 10px;
+            position: relative;
         }
         nav select {
             padding: 10px;
@@ -75,8 +78,8 @@
         }
         .product img {
             max-width: 100%;
-            height: 150px;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 10px;
         }
@@ -105,13 +108,36 @@
             text-decoration: none;
             padding: 10px 15px;
             border-radius: 5px;
-            font-size: 0.9em;
+            font-size: 1em;
             margin: 5px;
             display: inline-block;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         .button-group .btn:hover {
             background-color: #1b5e20;
+        }
+        .button-group .btn.contact {
+            background-color: #43a047;
+        }
+        .button-group .btn.contact:hover {
+            background-color: #388e3c;
+        }
+        #cartButton {
+            background-color: #f44336;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            position: fixed;
+            right: 10px;
+            bottom: 10%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+        #cartButton:hover {
+            background-color: #d32f2f;
         }
         footer {
             background-color: #388e3c;
@@ -133,7 +159,6 @@
                 flex: 1 1 calc(100% - 40px);
             }
             header {
-                font-size: 1.5em;
                 padding: 15px;
             }
             nav select {
@@ -143,13 +168,15 @@
             .container {
                 padding: 10px;
             }
+            header img {
+                transform: scale(1); /* Retorna o zoom da imagem para normal em telas muito pequenas */
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="https://drogariasantamaria.com.br/img_site/logo_santamaria.png" alt="Logo">
-        Catálogo de Produtos
+        <img src="images/Maria.png" alt="Drogaria Santa Maria Pinheirinho">
     </header>
 
     <nav>
@@ -169,6 +196,8 @@
     <footer>
         © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
+
+    <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
@@ -221,6 +250,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
+                                <a href="https://wa.me/35988490590?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -232,6 +262,23 @@
         function addToCart(name, price) {
             cart.push({ name, price });
             alert(`${name} foi adicionado ao carrinho!`);
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio.");
+            } else {
+                let cartContent = "Itens no carrinho:\n";
+                let total = 0;
+                cart.forEach(item => {
+                    cartContent += `- ${item.name} - ${item.price}\n`;
+                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
+                });
+                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
+
+                const cartLink = `https://wa.me/35988490590?text=${encodeURIComponent(cartContent)}`;
+                window.open(cartLink, "_blank");
+            }
         }
 
         function filterByCategory() {
