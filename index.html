@@ -17,12 +17,14 @@
             background-color: white; /* Fundo branco */
             padding: 20px;
             text-align: center;
+            overflow: hidden; /* Impede que a imagem saia da área do cabeçalho */
         }
         header img {
             max-width: 100%; /* Limita a largura para 100% do cabeçalho */
             height: auto; /* Ajusta a altura automaticamente para manter a proporção */
             max-height: 100px; /* Limita a altura máxima da imagem */
-            object-fit: contain; /* Garante que a imagem se ajuste sem distorção */
+            object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
+            transform: scale(1.1); /* Aumenta o zoom em 10% */
         }
         nav {
             text-align: center;
