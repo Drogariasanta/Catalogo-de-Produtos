@@ -14,23 +14,22 @@
             padding: 0;
         }
         header {
-            background-color: white; /* Fundo branco */
+            background-color: white;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             text-align: center;
-            overflow: hidden; /* Impede que a imagem saia da área do cabeçalho */
         }
         header img {
-            max-width: 100%; /* Limita a largura para 100% do cabeçalho */
-            height: auto; /* Ajusta a altura automaticamente para manter a proporção */
-            max-height: 100px; /* Limita a altura máxima da imagem */
-            object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
-            transform: scale(5); /* Aumenta o zoom para 500% */
+            max-height: 80px; /* Limita a altura da imagem */
+            object-fit: contain;
+            margin-right: 15px;
         }
-        /* Ajustes para dispositivos móveis */
-        @media (max-width: 768px) {
-            header img {
-                transform: scale(2); /* Reduz o zoom para 200% em telas menores */
-            }
+        header h1 {
+            font-size: 1.8em;
+            color: #333;
+            margin: 0;
         }
         nav {
             text-align: center;
@@ -168,15 +167,13 @@
             .container {
                 padding: 10px;
             }
-            header img {
-                transform: scale(1); /* Retorna o zoom da imagem para normal em telas muito pequenas */
-            }
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="images/Maria.png" alt="Drogaria Santa Maria Pinheirinho">
+        <img src="https://drogariasantamaria.com.br/img_site/logo_santamaria.png" alt="Logo Drogaria Santa Maria">
+        <h1>Catálogo de Produtos</h1>
     </header>
 
     <nav>
