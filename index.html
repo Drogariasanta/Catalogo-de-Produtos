@@ -24,7 +24,7 @@
             height: auto; /* Ajusta a altura automaticamente para manter a proporção */
             max-height: 100px; /* Limita a altura máxima da imagem */
             object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
-            transform: scale(1.1); /* Aumenta o zoom em 10% */
+            transform: scale(1.7); /* Aumenta o zoom em 70% */
         }
         nav {
             text-align: center;
@@ -71,7 +71,7 @@
         }
         .product img {
             max-width: 100%;
-            height: auto; /* Ajusta a altura para que não corte a imagem */
+            height: auto;
             object-fit: contain;
             border-radius: 10px;
             margin-bottom: 10px;
@@ -101,10 +101,11 @@
             text-decoration: none;
             padding: 10px 15px;
             border-radius: 5px;
-            font-size: 0.9em;
+            font-size: 1em;
             margin: 5px;
             display: inline-block;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         .button-group .btn:hover {
             background-color: #1b5e20;
@@ -237,10 +238,15 @@
                 alert("Seu carrinho está vazio.");
             } else {
                 let cartContent = "Itens no carrinho:\n";
+                let total = 0;
                 cart.forEach(item => {
                     cartContent += `- ${item.name} - ${item.price}\n`;
+                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
                 });
-                alert(cartContent);
+                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
+
+                const cartLink = `https://wa.me/35988490590?text=${encodeURIComponent(cartContent)}`;
+                window.open(cartLink, "_blank");
             }
         }
 
