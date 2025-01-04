@@ -14,24 +14,37 @@
             padding: 0;
         }
         header {
-            background-color: white; /* Fundo branco */
+            background-color: white;
             padding: 20px;
             text-align: center;
-            overflow: hidden; /* Impede que a imagem saia da área do cabeçalho */
+            overflow: hidden;
+            position: relative;
         }
-        header img {
-            max-width: 100%; /* Limita a largura para 100% do cabeçalho */
-            height: auto; /* Ajusta a altura automaticamente para manter a proporção */
-            max-height: 100px; /* Limita a altura máxima da imagem */
-            object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
-            transform: scale(5); /* Aumenta o zoom para 500% */
+        header h1 {
+            color: #388e3c;
+            font-size: 3em;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
         }
+        header h2 {
+            color: #66bb6a;
+            font-size: 1.2em;
+            font-weight: normal;
+            margin-top: 5px;
+        }
+
         /* Ajustes para dispositivos móveis */
         @media (max-width: 768px) {
-            header img {
-                transform: scale(2); /* Reduz o zoom para 200% em telas menores */
+            header h1 {
+                font-size: 2em;
+            }
+            header h2 {
+                font-size: 1em;
             }
         }
+
+        /* Estilos para o restante do site */
         nav {
             text-align: center;
             background-color: #43a047;
@@ -168,15 +181,13 @@
             .container {
                 padding: 10px;
             }
-            header img {
-                transform: scale(1); /* Retorna o zoom da imagem para normal em telas muito pequenas */
-            }
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="images/Maria.png" alt="Drogaria Santa Maria Pinheirinho">
+        <h1>Drogaria Santa Maria</h1>
+        <h2>Pinheirinho</h2>
     </header>
 
     <nav>
