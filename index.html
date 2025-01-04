@@ -15,19 +15,12 @@
         }
         header {
             background-color: white; /* Fundo branco */
-            color: green; /* Letras verdes */
             padding: 20px;
             text-align: center;
-            font-size: 2em;
-            font-weight: bold; /* Letras mais grossas */
         }
-        header .cross {
-            color: red;
-            font-size: 1.8em; /* Aumentei a cruz */
-            vertical-align: middle;
-            margin-left: 3px;
-            position: relative;
-            top: -5px; /* Eleva a cruz um pouco */
+        header img {
+            max-width: 100%;
+            height: auto;
         }
         nav {
             text-align: center;
@@ -132,7 +125,6 @@
                 flex: 1 1 calc(100% - 40px);
             }
             header {
-                font-size: 1.5em;
                 padding: 15px;
             }
             nav select {
@@ -147,7 +139,7 @@
 </head>
 <body>
     <header>
-        Drogaria San<span class="cross">+</span>a Maria Pinheirinho
+        <img src="images/Maria.png" alt="Drogaria Santa Maria Pinheirinho">
     </header>
 
     <nav>
