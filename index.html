@@ -112,10 +112,10 @@
             background-color: #1b5e20;
         }
         .button-group .btn.contact {
-            background-color: #0288d1;
+            background-color: #43a047;
         }
         .button-group .btn.contact:hover {
-            background-color: #01579b;
+            background-color: #388e3c;
         }
         #cartButton {
             background-color: #f44336;
@@ -123,12 +123,12 @@
             padding: 12px 20px;
             border-radius: 5px;
             font-size: 1.2em;
-            position: absolute;
+            position: fixed;
             right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 10%;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            z-index: 10;
         }
         #cartButton:hover {
             background-color: #d32f2f;
@@ -175,9 +175,6 @@
         <select id="categoryFilter" onchange="filterByCategory()">
             <!-- Categorias serão carregadas dinamicamente -->
         </select>
-        <!-- Botão de contato no WhatsApp -->
-        <a href="https://wa.me/35988490590" class="btn contact" target="_blank">Entrar em Contato</a>
-        <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
     </nav>
 
     <div class="container">
@@ -190,6 +187,8 @@
     <footer>
         © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
+
+    <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
