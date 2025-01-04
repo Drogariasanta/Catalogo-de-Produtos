@@ -36,13 +36,11 @@
             justify-content: center;
             text-align: center;
         }
-        header .title .cross {
+        header .title .t {
             color: #d32f2f;
             font-weight: bold;
-            font-size: 3em; /* Aumentando mais */
-            line-height: 0.8;
-            padding-left: 5px;
-            margin-top: -0.3em;
+            font-size: 3.5em; /* T minúsculo maior e vermelho */
+            margin-left: -10px; /* Ajuste para encostar */
         }
         header .cart {
             font-size: 1.2em;
@@ -164,9 +162,9 @@
                 justify-content: center;
                 text-align: center;
             }
-            header .title .cross {
-                font-size: 3.5em;
-                margin-left: -10px; /* Cruz mais encostada nas letras */
+            header .title .t {
+                font-size: 4em;
+                margin-left: -10px; /* T minúsculo mais encostado */
             }
             nav select {
                 font-size: 0.9em;
@@ -221,7 +219,7 @@
 <body>
     <header>
         <div class="title">
-            <span>San</span><span class="cross">+</span><span>ta Maria</span> Pinheirinho
+            <span>Drogaria Sa</span><span class="t">t</span><span>a Maria Pinheirinho</span>
         </div>
         <div class="cart" onclick="viewCart()">
             🛒 Carrinho (<span id="cartTotal">0</span>)
