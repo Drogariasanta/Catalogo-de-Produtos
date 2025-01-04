@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
         /* Estilos base */
@@ -32,6 +32,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         header .title .cross {
             color: #d32f2f;
@@ -152,6 +153,16 @@
             header {
                 font-size: 1.5em;
                 padding: 15px;
+            }
+            header .title {
+                font-size: 1.5em;
+                flex-direction: row; /* Alinha a frase em uma linha no celular */
+                justify-content: center;
+                text-align: center;
+            }
+            header .title .cross {
+                font-size: 2.2em;
+                padding-left: 10px;
             }
             nav select {
                 font-size: 0.9em;
