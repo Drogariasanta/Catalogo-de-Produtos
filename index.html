@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
-    <title>Drogaria Santa Maria</title>
+    <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
         /* Estilos base */
         body {
@@ -36,7 +36,9 @@
         header .title .cross {
             color: #d32f2f;
             font-weight: bold;
-            font-size: 1.5em;
+            font-size: 2em;
+            line-height: 0.8;
+            padding: 0 5px;
         }
         header .cart {
             position: absolute;
@@ -192,8 +194,9 @@
 <body>
     <header>
         <div class="title">
-            <span>Drogaria</span>
-            <span>San<span class="cross">+</span>ta Maria</span>
+            <span>Drogaria Santa Maria</span>
+            <span>Pinheirinho</span>
+            <span class="cross">+</span>
         </div>
         <div class="cart" onclick="viewCart()">
             🛒 Carrinho (<span id="cartTotal">0</span>)
@@ -215,7 +218,7 @@
     </div>
 
     <footer>
-        © 2024 Drogaria Santa Maria. Todos os direitos reservados.
+        © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
 
     <script>
@@ -259,6 +262,7 @@
 
             products.forEach(product => {
                 if (product["Nome do Produto"] && product["Categoria"]) {
+                    const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre o produto: ${product["Nome do Produto"]}.`)};`;
                     const productElement = `
                         <div class="product todos ${product["Categoria"]}">
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
@@ -267,6 +271,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
+                                <a href="${whatsappLink}" class="btn" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -293,7 +298,7 @@
         function addToCart(productName, price) {
             cart.push({ name: productName, price: parseFloat(price.replace("R$", "")) });
             updateCartTotal();
-            alert(`\"${productName}\" foi adicionado ao carrinho!`);
+            alert(`"${productName}" foi adicionado ao carrinho!`);
         }
 
         function updateCartTotal() {
