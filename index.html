@@ -126,34 +126,6 @@
             .container {
                 padding: 10px;
             }
-            #productContainer {
-                display: flex;
-                flex-direction: column;
-                align-items: center; /* Centraliza os produtos */
-                justify-content: center;
-            }
-            .product {
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        /* Responsividade para navegação */
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 20px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-
-        nav a:hover {
-            background: #005fa3;
-        }
-
-        .active {
-            background-color: #005fa3;
         }
     </style>
 </head>
@@ -176,19 +148,12 @@
         </div>
     </div>
 
-    <div class="container" style="text-align: center; margin-top: 20px;">
-        <button id="contactButton" onclick="contactWhatsApp()" style="padding: 15px; font-size: 1em; background-color: #388e3c; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            Entrar em Contato com a Lista
-        </button>
-    </div>
-
     <footer>
         © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
-        let wishlist = [];
 
         async function fetchData() {
             const response = await fetch(spreadsheetUrl);
@@ -227,8 +192,9 @@
 
             products.forEach(product => {
                 if (product["Nome do Produto"] && product["Categoria"]) {
+                    const categoryClass = product["Categoria"].toLowerCase().replace(/\s+/g, '-');
                     const productElement = `
-                        <div class="product todos ${product["Categoria"]}">
+                        <div class="product ${categoryClass}">
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
                             <h3>${product["Nome do Produto"]}</h3>
                             <p>${product["Descrição do Produto"]}</p>
@@ -249,7 +215,8 @@
             const products = document.querySelectorAll(".product");
 
             products.forEach(product => {
-                product.style.display = selectedCategory === "todos" || product.classList.contains(selectedCategory)
+                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
+                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
                     ? "block"
                     : "none";
             });
@@ -257,32 +224,6 @@
             document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
                 ? "Todos os Produtos"
                 : selectedCategory;
-        }
-
-        function addToWishlist(productName) {
-            if (!wishlist.includes(productName)) {
-                wishlist.push(productName);
-                alert(`"${productName}" foi adicionado à sua lista!`);
-            } else {
-                alert(`"${productName}" já está na sua lista!`);
-            }
-        }
-
-        function contactSingleProduct(productName) {
-            const message = `Olá, gostaria de saber mais sobre o produto: ${productName}`;
-            const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
-            window.open(whatsappLink, "_blank");
-        }
-
-        function contactWhatsApp() {
-            if (wishlist.length === 0) {
-                alert("Sua lista está vazia!");
-                return;
-            }
-
-            const message = `Gostaria de comprar os seguintes produtos: ${wishlist.join(", ")}`;
-            const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
-            window.open(whatsappLink, "_blank");
         }
 
         fetchData().then(products => {
