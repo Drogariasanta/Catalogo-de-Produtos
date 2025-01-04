@@ -28,10 +28,10 @@
         }
         header .title {
             color: #388e3c;
-            font-size: 1.8em;
+            font-size: 2em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
             flex-wrap: wrap;
             justify-content: center;
             text-align: center;
@@ -39,16 +39,17 @@
         header .title .cross {
             color: #d32f2f;
             font-weight: bold;
-            font-size: 2.2em;
+            font-size: 2.5em;
             line-height: 0.8;
             padding-left: 5px;
+            margin-top: -0.2em;
         }
         header .cart {
-            font-size: 1em;
+            font-size: 1.2em;
             color: #388e3c;
             cursor: pointer;
             position: absolute;
-            top: 20px;
+            top: 60px;
             right: 20px;
         }
         nav {
@@ -67,11 +68,6 @@
             border-radius: 5px;
             background-color: #66bb6a;
             color: white;
-        }
-        nav .cart {
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
         }
         .container {
             max-width: 1200px;
@@ -163,14 +159,14 @@
                 padding: 15px;
             }
             header .title {
-                font-size: 1.5em;
+                font-size: 1.8em;
                 flex-direction: row; /* Alinha a frase em uma linha no celular */
                 justify-content: center;
                 text-align: center;
             }
             header .title .cross {
-                font-size: 2.2em;
-                padding-left: 10px;
+                font-size: 2.8em;
+                margin-left: -10px; /* Cruz mais encostada nas letras */
             }
             nav select {
                 font-size: 0.9em;
@@ -237,9 +233,6 @@
         <select id="categoryFilter" onchange="filterByCategory()">
             <!-- Categorias serão carregadas dinamicamente -->
         </select>
-        <div class="cart" onclick="viewCart()">
-            🛒
-        </div>
     </nav>
 
     <div class="container">
