@@ -24,6 +24,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         header .title {
             color: #388e3c;
@@ -35,7 +36,18 @@
         header .title .cross {
             color: #d32f2f;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.5em;
+        }
+        header .cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1em;
+            color: #388e3c;
+            cursor: pointer;
+        }
+        header .cart span {
+            font-weight: bold;
         }
         nav {
             text-align: center;
@@ -181,7 +193,10 @@
     <header>
         <div class="title">
             <span>Drogaria</span>
-            <span>Santa <span class="cross">+</span> Maria</span>
+            <span>San<span class="cross">+</span>ta Maria</span>
+        </div>
+        <div class="cart" onclick="viewCart()">
+            🛒 Carrinho (<span id="cartTotal">0</span>)
         </div>
     </header>
 
@@ -205,6 +220,7 @@
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
+        const cart = [];
 
         async function fetchData() {
             const response = await fetch(spreadsheetUrl);
@@ -250,8 +266,7 @@
                             <p>${product["Descrição do Produto"]}</p>
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
-                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}')">Adicionar ao Carrinho</button>
-                                <button class="btn" onclick="contactSingleProduct('${product["Nome do Produto"]}')">Contato</button>
+                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
                             </div>
                         </div>
                     `;
@@ -275,12 +290,25 @@
                 : selectedCategory;
         }
 
-        function addToCart(productName) {
-            alert(`"${productName}" foi adicionado ao carrinho!`);
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: parseFloat(price.replace("R$", "")) });
+            updateCartTotal();
+            alert(`\"${productName}\" foi adicionado ao carrinho!`);
         }
 
-        function contactSingleProduct(productName) {
-            const message = `Olá, gostaria de saber mais sobre o produto: ${productName}`;
+        function updateCartTotal() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById("cartTotal").textContent = `R$${total.toFixed(2)}`;
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+
+            const cartItems = cart.map(item => `${item.name} - R$${item.price.toFixed(2)}`).join("\n");
+            const message = `Itens no carrinho:\n\n${cartItems}\n\nTotal: R$${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}`;
             const whatsappLink = `https://wa.me/35988490590?text=${encodeURIComponent(message)}`;
             window.open(whatsappLink, "_blank");
         }
