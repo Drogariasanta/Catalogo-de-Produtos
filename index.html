@@ -26,6 +26,12 @@
             object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
             transform: scale(5); /* Aumenta o zoom para 500% */
         }
+        /* Ajustes para dispositivos móveis */
+        @media (max-width: 768px) {
+            header img {
+                transform: scale(2); /* Reduz o zoom para 200% em telas menores */
+            }
+        }
         nav {
             text-align: center;
             background-color: #43a047;
@@ -125,7 +131,7 @@
             font-size: 1.2em;
             position: fixed;
             right: 10px;
-            top: 10%;
+            bottom: 10%;
             cursor: pointer;
             transition: background-color 0.3s ease;
             z-index: 10;
@@ -161,6 +167,9 @@
             }
             .container {
                 padding: 10px;
+            }
+            header img {
+                transform: scale(1); /* Retorna o zoom da imagem para normal em telas muito pequenas */
             }
         }
     </style>
