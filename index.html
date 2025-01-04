@@ -2,93 +2,122 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
-        /* Estilos base */
         body {
             font-family: Arial, sans-serif;
-            background-color: #e8f5e9;
-            color: #333;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
         }
+
         header {
-            background-color: #388e3c;
-            color: white;
+            background-color: #ffffff;
             padding: 20px;
             text-align: center;
+            border-bottom: 3px solid #388e3c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header img {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        .header-text h1 {
+            color: #388e3c;
             font-size: 1.8em;
+            margin: 0;
         }
-        nav {
-            text-align: center;
-            background-color: #43a047;
-            padding: 10px;
+
+        .header-text h1 span {
+            color: #d32f2f; /* Vermelho da cruz */
+            font-weight: bold;
         }
-        nav select {
-            padding: 10px;
+
+        .header-text p {
+            color: #d32f2f;
             font-size: 1em;
-            border: none;
-            border-radius: 5px;
-            background-color: #66bb6a;
-            color: white;
+            margin: 5px 0 0;
         }
+
+        nav {
+            background-color: #388e3c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             max-width: 1200px;
             margin: auto;
             padding: 20px;
         }
-        #productContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
+
         .product {
             background: white;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            margin: 15px;
             text-align: center;
-            flex: 1 1 calc(33.33% - 40px);
+            vertical-align: top;
+            width: calc(33.33% - 40px); /* 3 produtos por linha em telas grandes */
+            display: inline-block;
             box-sizing: border-box;
-            min-height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 400px; /* Define uma altura fixa para todos os produtos */
         }
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
+
         .product img {
             max-width: 100%;
             height: 150px;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 10px;
         }
+
         .product h3 {
             font-size: 1.1em;
             margin: 10px 0;
             color: #333;
         }
+
         .product p {
             color: #666;
             font-size: 0.9em;
             margin-bottom: 10px;
         }
+
         .price {
             color: #43a047;
             font-weight: bold;
             font-size: 1.2em;
             margin: 10px 0;
         }
+
         .button-group {
             margin-top: 15px;
         }
+
         .button-group .btn {
             background-color: #2e7d32;
             color: white;
@@ -100,9 +129,11 @@
             display: inline-block;
             cursor: pointer;
         }
+
         .button-group .btn:hover {
             background-color: #1b5e20;
         }
+
         footer {
             background-color: #388e3c;
             color: white;
@@ -111,25 +142,23 @@
             font-size: 0.9em;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             .product {
-                flex: 1 1 calc(50% - 40px);
+                width: calc(50% - 40px); /* Exibe 2 produtos por linha em telas médias */
             }
         }
 
         @media (max-width: 480px) {
             .product {
-                flex: 1 1 calc(100% - 40px);
+                width: calc(100% - 40px); /* Exibe 1 produto por linha em telas pequenas */
+                margin: 10px 0;
             }
+
             header {
                 font-size: 1.5em;
                 padding: 15px;
             }
-            nav select {
-                font-size: 0.9em;
-                padding: 8px;
-            }
+
             .container {
                 padding: 10px;
             }
@@ -138,19 +167,22 @@
 </head>
 <body>
     <header>
-        Drogaria Santa Maria Pinheirinho
+        <img src="logo.png" alt="Drogaria Santa Maria">
+        <div class="header-text">
+            <h1>Drogaria <span>Santa Maria</span></h1>
+            <p>Aqui o Cliente é Sagrado</p>
+        </div>
     </header>
 
     <nav>
-        <label for="categoryFilter" style="color: white; font-size: 1em; margin-right: 10px;">Selecione uma Categoria:</label>
-        <select id="categoryFilter" onchange="filterByCategory()">
-            <!-- Categorias serão carregadas dinamicamente -->
-        </select>
+        <a href="#">Home</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#contato">Contato</a>
     </nav>
 
     <div class="container">
         <h2 id="categoryTitle">Todos os Produtos</h2>
-        <div id="productContainer">
+        <div id="productContainer" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <!-- Produtos serão carregados dinamicamente -->
         </div>
     </div>
@@ -161,8 +193,6 @@
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
-
-        let cart = [];
 
         async function fetchData() {
             const response = await fetch(spreadsheetUrl);
@@ -201,15 +231,14 @@
 
             products.forEach(product => {
                 if (product["Nome do Produto"] && product["Categoria"]) {
-                    const categoryClass = product["Categoria"].toLowerCase().replace(/\s+/g, '-');
                     const productElement = `
-                        <div class="product ${categoryClass}">
+                        <div class="product todos ${product["Categoria"]}">
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
                             <h3>${product["Nome do Produto"]}</h3>
                             <p>${product["Descrição do Produto"]}</p>
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
-                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
+                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}')">Adicionar ao Carrinho</button>
                             </div>
                         </div>
                     `;
@@ -218,29 +247,14 @@
             });
         }
 
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            alert(`${name} foi adicionado ao carrinho!`);
-        }
+        let cart = [];
 
-        function filterByCategory() {
-            const selectedCategory = document.getElementById("categoryFilter").value;
-            const products = document.querySelectorAll(".product");
-
-            products.forEach(product => {
-                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
-                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
-                    ? "block"
-                    : "none";
-            });
-
-            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
-                ? "Todos os Produtos"
-                : selectedCategory;
+        function addToCart(productName) {
+            cart.push(productName);
+            alert(`"${productName}" foi adicionado ao carrinho!`);
         }
 
         fetchData().then(products => {
-            populateCategories(products);
             populateProducts(products);
         });
     </script>
