@@ -14,18 +14,20 @@
             padding: 0;
         }
         header {
-            background-color: #388e3c;
-            color: white;
+            background-color: white; /* Fundo branco */
+            color: green; /* Letras verdes */
             padding: 20px;
             text-align: center;
-            font-size: 1.8em;
-            color: green; /* Letras verdes */
+            font-size: 2em;
+            font-weight: bold; /* Letras mais grossas */
         }
         header .cross {
             color: red;
-            font-size: 1.5em; /* Tamanho da cruz */
+            font-size: 1.8em; /* Aumentei a cruz */
             vertical-align: middle;
-            margin-left: 5px;
+            margin-left: 3px;
+            position: relative;
+            top: -5px; /* Eleva a cruz um pouco */
         }
         nav {
             text-align: center;
@@ -153,6 +155,10 @@
         <select id="categoryFilter" onchange="filterByCategory()">
             <!-- Categorias serão carregadas dinamicamente -->
         </select>
+        <!-- Botão para visualizar o carrinho -->
+        <button class="btn" onclick="viewCart()">Ver Carrinho</button>
+        <!-- Botão de contato no WhatsApp -->
+        <a href="https://wa.me/35988490590" class="btn" target="_blank">Entrar em Contato</a>
     </nav>
 
     <div class="container">
@@ -228,6 +234,18 @@
         function addToCart(name, price) {
             cart.push({ name, price });
             alert(`${name} foi adicionado ao carrinho!`);
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio.");
+            } else {
+                let cartContent = "Itens no carrinho:\n";
+                cart.forEach(item => {
+                    cartContent += `- ${item.name} - ${item.price}\n`;
+                });
+                alert(cartContent);
+            }
         }
 
         function filterByCategory() {
