@@ -24,12 +24,13 @@
             height: auto; /* Ajusta a altura automaticamente para manter a proporção */
             max-height: 100px; /* Limita a altura máxima da imagem */
             object-fit: cover; /* Aplica o zoom (corte) para preencher o espaço */
-            transform: scale(1.7); /* Aumenta o zoom em 70% */
+            transform: scale(1.2); /* Aumenta o zoom em 120% */
         }
         nav {
             text-align: center;
             background-color: #43a047;
             padding: 10px;
+            position: relative;
         }
         nav select {
             padding: 10px;
@@ -110,6 +111,28 @@
         .button-group .btn:hover {
             background-color: #1b5e20;
         }
+        .button-group .btn.contact {
+            background-color: #0288d1;
+        }
+        .button-group .btn.contact:hover {
+            background-color: #01579b;
+        }
+        #cartButton {
+            background-color: #f44336;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #cartButton:hover {
+            background-color: #d32f2f;
+        }
         footer {
             background-color: #388e3c;
             color: white;
@@ -152,10 +175,9 @@
         <select id="categoryFilter" onchange="filterByCategory()">
             <!-- Categorias serão carregadas dinamicamente -->
         </select>
-        <!-- Botão para visualizar o carrinho -->
-        <button class="btn" onclick="viewCart()">Ver Carrinho</button>
         <!-- Botão de contato no WhatsApp -->
-        <a href="https://wa.me/35988490590" class="btn" target="_blank">Entrar em Contato</a>
+        <a href="https://wa.me/35988490590" class="btn contact" target="_blank">Entrar em Contato</a>
+        <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
     </nav>
 
     <div class="container">
@@ -220,6 +242,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
+                                <a href="https://wa.me/35988490590?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
