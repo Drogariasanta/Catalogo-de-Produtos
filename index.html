@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
     <title>Catálogo de Produtos</title>
     <style>
         /* Estilos base */
@@ -14,50 +14,26 @@
             padding: 0;
         }
         header {
-            background-color: white;
+            background-color: #388e3c;
+            color: white;
             padding: 20px;
             text-align: center;
-            overflow: hidden;
+            font-size: 1.8em;
             position: relative;
         }
+
         header img {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            height: 60px;
-            width: auto;
-        }
-        header h1 {
-            color: #388e3c;
-            font-size: 2.5em;
-            font-weight: bold;
-            margin: 0;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-        header h2 {
-            color: #66bb6a;
-            font-size: 2em;
-            font-weight: normal;
-            margin-top: -10px;
+            top: 10px;
+            left: 10px;
+            height: 150px; /* Aumentei a altura para 150px */
+            width: 250px; /* Aumentei a largura para 250px */
         }
 
-        /* Ajustes para dispositivos móveis */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-            header h2 {
-                font-size: 1.5em;
-            }
-        }
-
-        /* Estilos para o restante do site */
         nav {
             text-align: center;
             background-color: #43a047;
             padding: 10px;
-            position: relative;
         }
         nav select {
             padding: 10px;
@@ -99,8 +75,8 @@
         }
         .product img {
             max-width: 100%;
-            height: auto;
-            object-fit: contain;
+            height: 150px;
+            object-fit: cover;
             border-radius: 10px;
             margin-bottom: 10px;
         }
@@ -129,36 +105,13 @@
             text-decoration: none;
             padding: 10px 15px;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 0.9em;
             margin: 5px;
             display: inline-block;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
         .button-group .btn:hover {
             background-color: #1b5e20;
-        }
-        .button-group .btn.contact {
-            background-color: #43a047;
-        }
-        .button-group .btn.contact:hover {
-            background-color: #388e3c;
-        }
-        #cartButton {
-            background-color: #f44336;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 1.2em;
-            position: fixed;
-            right: 10px;
-            bottom: 10%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 10;
-        }
-        #cartButton:hover {
-            background-color: #d32f2f;
         }
         footer {
             background-color: #388e3c;
@@ -180,6 +133,7 @@
                 flex: 1 1 calc(100% - 40px);
             }
             header {
+                font-size: 1.5em;
                 padding: 15px;
             }
             nav select {
@@ -194,8 +148,8 @@
 </head>
 <body>
     <header>
-        <img src="https://drogariasantamaria.com.br/img_site/logo_santamaria.png" alt="Logo Santa Maria">
-        <h1>Catálogo de Produtos</h1>
+        <img src="https://drogariasantamaria.com.br/img_site/logo_santamaria.png" alt="Logo">
+        Catálogo de Produtos
     </header>
 
     <nav>
@@ -215,8 +169,6 @@
     <footer>
         © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
-
-    <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
 
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
@@ -269,7 +221,6 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/35988490590?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -281,23 +232,6 @@
         function addToCart(name, price) {
             cart.push({ name, price });
             alert(`${name} foi adicionado ao carrinho!`);
-        }
-
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Seu carrinho está vazio.");
-            } else {
-                let cartContent = "Itens no carrinho:\n";
-                let total = 0;
-                cart.forEach(item => {
-                    cartContent += `- ${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
-                });
-                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
-
-                const cartLink = `https://wa.me/35988490590?text=${encodeURIComponent(cartContent)}`;
-                window.open(cartLink, "_blank");
-            }
         }
 
         function filterByCategory() {
