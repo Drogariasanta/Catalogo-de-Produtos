@@ -20,9 +20,11 @@
             text-align: center;
             font-size: 1.8em;
         }
-        header span {
-            font-size: 1.4em; /* Ajusta o tamanho da cruz */
-            color: red; /* Cruz vermelha */
+        header .cross {
+            color: red;
+            font-size: 1.5em; /* Ajusta o tamanho da cruz */
+            margin-left: 5px;
+            vertical-align: middle;
         }
         nav {
             text-align: center;
@@ -69,8 +71,8 @@
         }
         .product img {
             max-width: 100%;
-            height: 150px;
-            object-fit: cover;
+            height: auto; /* Ajusta a altura para que não corte a imagem */
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 10px;
         }
@@ -142,7 +144,7 @@
 </head>
 <body>
     <header>
-        Drogaria San<span>✝️</span>a Maria Pinheirinho
+        Drogaria San<span class="cross">✝️</span>a Maria Pinheirinho
     </header>
 
     <nav>
