@@ -22,25 +22,34 @@
         }
         header h1 {
             color: #388e3c;
-            font-size: 3em;
+            font-size: 4em;
             font-weight: bold;
             margin: 0;
             text-transform: uppercase;
+            display: inline-block;
+        }
+        header h1 span {
+            color: red;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(-30%, -25%);
         }
         header h2 {
             color: #66bb6a;
-            font-size: 1.2em;
+            font-size: 2.5em;
             font-weight: normal;
-            margin-top: 5px;
+            margin-top: -10px;
         }
 
         /* Ajustes para dispositivos móveis */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2em;
+                font-size: 2.5em;
             }
             header h2 {
-                font-size: 1em;
+                font-size: 1.5em;
             }
         }
 
@@ -186,7 +195,7 @@
 </head>
 <body>
     <header>
-        <h1>Drogaria Santa Maria</h1>
+        <h1><span>✝</span>Drogaria Santa Maria</h1>
         <h2>Pinheirinho</h2>
     </header>
 
