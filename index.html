@@ -247,7 +247,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/3534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -273,7 +273,7 @@
                 });
                 cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
 
-                const cartLink = `https://wa.me/3534703859?text=${encodeURIComponent(cartContent)}`;
+                const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
                 window.open(cartLink, "_blank");
             }
         }
