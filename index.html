@@ -18,17 +18,17 @@
             padding: 20px;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centraliza o conteúdo */
+            justify-content: center;
             text-align: center;
         }
         header img {
-            max-height: 80px; /* Limita a altura da imagem */
+            max-height: 80px;
             object-fit: contain;
             margin-right: 15px;
         }
         header h1 {
             font-size: 2em;
-            color: #43a047; /* Cor verde */
+            color: #43a047;
             margin: 0;
         }
         nav {
@@ -138,6 +138,42 @@
         #cartButton:hover {
             background-color: #d32f2f;
         }
+        #cartForm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+        }
+        #cartForm label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #cartForm input, #cartForm select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #cartForm button {
+            width: 100%;
+            padding: 10px;
+            background-color: #43a047;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        #cartForm button:hover {
+            background-color: #388e3c;
+        }
         footer {
             background-color: #388e3c;
             color: white;
@@ -145,28 +181,17 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .product {
-                flex: 1 1 calc(50% - 40px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .product {
-                flex: 1 1 calc(100% - 40px);
-            }
-            header {
-                padding: 15px;
-            }
-            nav select {
-                font-size: 0.9em;
-                padding: 8px;
-            }
-            .container {
-                padding: 10px;
-            }
+        
+        /* Overlay */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 15;
         }
     </style>
 </head>
@@ -194,110 +219,68 @@
         © 2024 Drogaria Santa Maria Pinheirinho. Todos os direitos reservados.
     </footer>
 
-    <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
+    <div id="overlay"></div>
+    <div id="cartForm">
+        <h2>Finalizar Compra</h2>
+        <label for="clientName">Seu Nome:</label>
+        <input type="text" id="clientName" placeholder="Digite seu nome" required>
+        <label for="paymentMethod">Forma de Pagamento:</label>
+        <select id="paymentMethod" required>
+            <option value="">Selecione</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Boleto">Boleto</option>
+            <option value="Dinheiro">Dinheiro</option>
+        </select>
+        <button onclick="submitCart()">Enviar Pedido</button>
+    </div>
+
+    <button id="cartButton" onclick="showCartForm()">Ver Carrinho</button>
 
     <script>
-        const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
-
         let cart = [];
-
-        async function fetchData() {
-            const response = await fetch(spreadsheetUrl);
-            const data = await response.text();
-            return parseCSV(data);
-        }
-
-        function parseCSV(data) {
-            const rows = data.split("\n");
-            const headers = rows[0].split(",");
-            return rows.slice(1).map(row => {
-                const values = row.split(",");
-                return headers.reduce((acc, header, index) => {
-                    acc[header.trim()] = values[index]?.trim();
-                    return acc;
-                }, {});
-            });
-        }
-
-        function populateCategories(products) {
-            const categoryFilter = document.getElementById("categoryFilter");
-            const uniqueCategories = new Set(products.map(p => p["Categoria"]));
-
-            categoryFilter.innerHTML = `<option value="todos">Todos</option>`;
-
-            uniqueCategories.forEach(category => {
-                if (category) {
-                    categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
-                }
-            });
-        }
-
-        function populateProducts(products) {
-            const productContainer = document.getElementById("productContainer");
-            productContainer.innerHTML = "";
-
-            products.forEach(product => {
-                if (product["Nome do Produto"] && product["Categoria"]) {
-                    const categoryClass = product["Categoria"].toLowerCase().replace(/\s+/g, '-');
-                    const productElement = `
-                        <div class="product ${categoryClass}">
-                            <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
-                            <h3>${product["Nome do Produto"]}</h3>
-                            <p>${product["Descrição do Produto"]}</p>
-                            <div class="price">${product["Preço"]}</div>
-                            <div class="button-group">
-                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
-                            </div>
-                        </div>
-                    `;
-                    productContainer.innerHTML += productElement;
-                }
-            });
-        }
 
         function addToCart(name, price) {
             cart.push({ name, price });
             alert(`${name} foi adicionado ao carrinho!`);
         }
 
-        function viewCart() {
+        function showCartForm() {
             if (cart.length === 0) {
                 alert("Seu carrinho está vazio.");
-            } else {
-                let cartContent = "Itens no carrinho:\n";
-                let total = 0;
-                cart.forEach(item => {
-                    cartContent += `- ${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
-                });
-                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
-
-                const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
-                window.open(cartLink, "_blank");
+                return;
             }
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("cartForm").style.display = "block";
         }
 
-        function filterByCategory() {
-            const selectedCategory = document.getElementById("categoryFilter").value;
-            const products = document.querySelectorAll(".product");
+        function submitCart() {
+            const clientName = document.getElementById("clientName").value;
+            const paymentMethod = document.getElementById("paymentMethod").value;
 
-            products.forEach(product => {
-                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
-                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
-                    ? "block"
-                    : "none";
+            if (!clientName || !paymentMethod) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            let cartContent = `Cliente: ${clientName}\nForma de Pagamento: ${paymentMethod}\nItens no carrinho:\n`;
+            let total = 0;
+            cart.forEach(item => {
+                cartContent += `- ${item.name} - ${item.price}\n`;
+                total += parseFloat(item.price.replace("R$", "").replace(",", "."));
             });
+            cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
 
-            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
-                ? "Todos os Produtos"
-                : selectedCategory;
+            const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
+            window.open(cartLink, "_blank");
+
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("cartForm").style.display = "none";
         }
 
-        fetchData().then(products => {
-            populateCategories(products);
-            populateProducts(products);
-        });
+        document.getElementById("overlay").onclick = () => {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("cartForm").style.display = "none";
+        };
     </script>
 </body>
 </html>
