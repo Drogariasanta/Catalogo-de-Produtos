@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Drogaria Santa Maria Pinheirinho</title>
     <style>
+        /* Estilos base */
         body {
             font-family: Arial, sans-serif;
             background-color: #e8f5e9;
@@ -34,7 +35,6 @@
             text-align: center;
             background-color: #43a047;
             padding: 10px;
-            position: relative;
         }
         nav select {
             padding: 10px;
@@ -144,11 +144,14 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
+
+        /* Responsividade */
         @media (max-width: 768px) {
             .product {
                 flex: 1 1 calc(50% - 40px);
             }
         }
+
         @media (max-width: 480px) {
             .product {
                 flex: 1 1 calc(100% - 40px);
@@ -175,12 +178,14 @@
     <nav>
         <label for="categoryFilter" style="color: white; font-size: 1em; margin-right: 10px;">Selecione uma Categoria:</label>
         <select id="categoryFilter" onchange="filterByCategory()">
+            <!-- Categorias serão carregadas dinamicamente -->
         </select>
     </nav>
 
     <div class="container">
         <h2 id="categoryTitle">Todos os Produtos</h2>
         <div id="productContainer">
+            <!-- Produtos serão carregados dinamicamente -->
         </div>
     </div>
 
@@ -241,7 +246,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Nome:%20${encodeURIComponent(product["Nome do Produto"])}%20Forma%20de%20Pagamento:%20[Insira%20Forma]%20Itens:%20[Insira%20Itens]" class="btn contact" target="_blank">Entrar em Contato</a>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -259,8 +264,12 @@
             if (cart.length === 0) {
                 alert("Seu carrinho está vazio.");
             } else {
-                let cartContent = "Nome:\nForma de Pagamento:\nItens do carrinho:\n";
+                const name = prompt("Digite seu nome:");
+                const paymentMethod = prompt("Digite a forma de pagamento:");
+
+                let cartContent = `Nome: ${name}\nForma de Pagamento: ${paymentMethod}\nItens do carrinho:\n`;
                 let total = 0;
+
                 cart.forEach(item => {
                     cartContent += `- ${item.name} - ${item.price}\n`;
                     total += parseFloat(item.price.replace("R$", "").replace(",", "."));
