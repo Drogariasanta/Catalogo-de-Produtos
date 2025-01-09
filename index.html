@@ -15,23 +15,23 @@
         }
         header {
             background-color: white;
-            padding: 20px;
+            padding: 10px; /* Reduzi o espaçamento */
             text-align: center;
         }
         header img {
-            max-height: 350px; /* Aumentado o tamanho da imagem */
+            max-height: 100px; /* Tamanho máximo da imagem ajustado */
             object-fit: contain;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         header h1 {
-            font-size: 2em;
+            font-size: 1.5em; /* Reduzi o tamanho da fonte */
             color: #43a047;
-            margin: 0;
+            margin: 5px 0;
         }
         header .contact-info {
-            font-size: 1.1em;
-            color: #43a047; /* Texto do contato agora está em verde */
-            margin-bottom: 10px;
+            font-size: 1em; /* Texto de contato ajustado */
+            color: #43a047; /* Mantido em verde */
+            margin-bottom: 5px;
         }
         nav {
             text-align: center;
@@ -146,14 +146,27 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
+
+        /* Responsividade */
         @media (max-width: 768px) {
             .product {
                 flex: 1 1 calc(50% - 40px);
             }
         }
+
         @media (max-width: 480px) {
             .product {
                 flex: 1 1 calc(100% - 40px);
+            }
+            header {
+                padding: 10px;
+            }
+            nav select {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+            .container {
+                padding: 10px;
             }
         }
     </style>
