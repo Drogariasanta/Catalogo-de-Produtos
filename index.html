@@ -15,15 +15,23 @@
         }
         header {
             background-color: white;
-            padding: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centraliza o conteúdo */
             text-align: center;
             position: relative;
-            height: 150px; /* Reduzindo a altura do cabeçalho */
         }
         header img {
             width: 100%;
             object-fit: cover;
             height: 100%;
+        }
+        header h1 {
+            font-size: 2em;
+            color: #43a047; /* Cor verde */
+            margin: 0;
+            position: absolute;
         }
         .contact {
             font-size: 1.2em;
@@ -161,7 +169,7 @@
                 flex: 1 1 calc(100% - 40px);
             }
             header {
-                height: 150px;
+                padding: 15px;
             }
             nav select {
                 font-size: 0.9em;
@@ -175,7 +183,9 @@
 </head>
 <body>
     <header>
-        <img src="https://i.imgur.com/kg4nNxF_d.webp?maxwidth=760&fidelity=grand" alt="Logo Drogaria Santa Maria">
+        <img src="https://i.imgur.com/kg4nNxF.jpeg" alt="Logo Drogaria Santa Maria">
+        <h1>Todos os Produtos</h1>
+        <span class="contact">Telefone: 553534703859</span>
     </header>
 
     <nav>
@@ -186,10 +196,7 @@
     </nav>
 
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 id="categoryTitle">Todos os Produtos</h2>
-            <div class="contact" style="position: static;">Contato: (53) 5347-0385</div>
-        </div>
+        <h2 id="categoryTitle">Todos os Produtos</h2>
         <div id="productContainer">
             <!-- Produtos serão carregados dinamicamente -->
         </div>
