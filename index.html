@@ -16,20 +16,22 @@
         header {
             background-color: white;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             text-align: center;
         }
         header img {
-            max-height: 80px;
+            max-height: 120px; /* Aumentado para destacar a imagem */
             object-fit: contain;
-            margin-right: 15px;
+            margin-bottom: 10px;
         }
         header h1 {
             font-size: 2em;
             color: #43a047;
             margin: 0;
+        }
+        header .contact-info {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
         }
         nav {
             text-align: center;
@@ -144,27 +146,14 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
-
-        /* Responsividade */
         @media (max-width: 768px) {
             .product {
                 flex: 1 1 calc(50% - 40px);
             }
         }
-
         @media (max-width: 480px) {
             .product {
                 flex: 1 1 calc(100% - 40px);
-            }
-            header {
-                padding: 15px;
-            }
-            nav select {
-                font-size: 0.9em;
-                padding: 8px;
-            }
-            .container {
-                padding: 10px;
             }
         }
     </style>
@@ -172,6 +161,7 @@
 <body>
     <header>
         <img src="https://i.imgur.com/hZXO6n7.png" alt="Logo Drogaria Santa Maria">
+        <div class="contact-info">Contato: (35) 3470-3859</div>
         <h1>Catálogo de Produtos</h1>
     </header>
 
