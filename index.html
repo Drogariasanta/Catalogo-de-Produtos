@@ -23,7 +23,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header img {
-            max-height: 400%;
+            max-height: 100%;
             max-width: 250px;
             object-fit: contain;
         }
@@ -156,13 +156,13 @@
         /* Responsividade */
         @media (max-width: 768px) {
             header {
-                flex-direction: row;  /* Mantenha a imagem e o texto ao lado no celular */
+                flex-direction: row;  /* Manter imagem e texto lado a lado */
                 height: auto;
                 text-align: left;
             }
 
             header img {
-                margin-right: 20px; /* Espaço entre a imagem e o texto */
+                margin-right: 20px; /* Espaço entre imagem e título */
             }
 
             header h1 {
@@ -180,22 +180,30 @@
 
         @media (max-width: 480px) {
             header {
-                flex-direction: column;  /* Alinha a imagem em cima do texto no celular */
-                text-align: center;
+                flex-direction: row; /* Manter imagem ao lado do texto */
+                text-align: left;
+                align-items: center;
             }
 
             header img {
-                margin-bottom: 10px;
-                max-height: 100%;  /* Manter o tamanho da imagem sem redução */
+                margin-right: 10px;
+                max-height: 100%;  /* Garantir que a imagem não aumente além do necessário */
+                max-width: 120px;  /* Ajuste para melhor exibição no celular */
+            }
+
+            header h1 {
+                font-size: 1.2em;
             }
 
             .product {
                 flex: 1 1 calc(100% - 40px);
             }
+
             nav select {
                 font-size: 0.9em;
                 padding: 8px;
             }
+
             .container {
                 padding: 10px;
             }
