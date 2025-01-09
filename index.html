@@ -21,11 +21,11 @@
             justify-content: center; /* Centraliza o conteúdo */
             text-align: center;
             position: relative;
-            height: 180px; /* Altura do cabeçalho reduzida */
+            height: 180px; /* Altura do cabeçalho reduzida no PC */
         }
         header img {
-            width: 70%; /* Imagem um pouco menor */
-            object-fit: cover;
+            width: 80%; /* Ajusta a largura para evitar o corte da imagem */
+            object-fit: contain;
             height: 150px; /* Altura da imagem ajustada */
         }
         header h1 {
@@ -152,17 +152,17 @@
 
         /* Responsividade */
         @media (max-width: 768px) {
+            header {
+                height: 150px; /* Diminuir altura do cabeçalho no celular */
+            }
             .product {
                 flex: 1 1 calc(50% - 40px);
             }
         }
 
         @media (max-width: 480px) {
-            .product {
-                flex: 1 1 calc(100% - 40px);
-            }
             header {
-                padding: 15px;
+                height: 130px; /* Ajuste adicional para celulares menores */
             }
             nav select {
                 font-size: 0.9em;
@@ -170,6 +170,9 @@
             }
             .container {
                 padding: 10px;
+            }
+            .product {
+                flex: 1 1 calc(100% - 40px);
             }
         }
     </style>
@@ -253,7 +256,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Telefone: 35 34703859</a>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
