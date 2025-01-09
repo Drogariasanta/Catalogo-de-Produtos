@@ -21,7 +21,7 @@
             height: 200px; /* Cabeçalho menor */
         }
         header img {
-            width: 100%; /* Imagem de cabo a rabo */
+            width: 100%;
             object-fit: cover;
             height: 100%;
         }
@@ -170,6 +170,9 @@
             .container {
                 padding: 10px;
             }
+            .contact {
+                top: 50px; /* Ajusta a posição para não ficar sobre a categoria */
+            }
         }
     </style>
 </head>
@@ -187,7 +190,10 @@
     </nav>
 
     <div class="container">
-        <h2 id="categoryTitle">Todos os Produtos</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 id="categoryTitle">Todos os Produtos</h2>
+            <div class="contact" style="position: static;">Contato: (53) 5347-0385</div>
+        </div>
         <div id="productContainer">
             <!-- Produtos serão carregados dinamicamente -->
         </div>
