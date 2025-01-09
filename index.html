@@ -15,14 +15,14 @@
         }
         header {
             background-color: white;
-            padding: 20px;
+            padding: 0;
             text-align: center;
             position: relative;
         }
         header img {
-            max-height: 150px; /* Aumenta a logo */
-            object-fit: contain;
-            margin-bottom: 10px;
+            width: 100%; /* Imagem de cabo a rabo */
+            object-fit: cover;
+            height: auto;
         }
         .contact {
             font-size: 1.2em;
@@ -177,7 +177,7 @@
 <body>
     <header>
         <img src="https://i.imgur.com/kg4nNxF_d.webp?maxwidth=760&fidelity=grand" alt="Logo Drogaria Santa Maria">
-        <a href="https://wa.me/553534703859" class="contact">Contato: (53) 5347-0385</a>
+        <div class="contact" style="color: #388e3c;">Contato: (53) 5347-0385</div>
     </header>
 
     <nav>
