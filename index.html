@@ -19,7 +19,7 @@
             text-align: center;
         }
         header img {
-            max-height: 120px; /* Aumentado para destacar a imagem */
+            max-height: 150px; /* Aumentado o tamanho da imagem */
             object-fit: contain;
             margin-bottom: 10px;
         }
@@ -30,7 +30,7 @@
         }
         header .contact-info {
             font-size: 1.1em;
-            color: #333;
+            color: #43a047; /* Texto do contato agora está em verde */
             margin-bottom: 10px;
         }
         nav {
@@ -287,7 +287,8 @@
                 : selectedCategory;
         }
 
-        fetchData().then(products => {
+        document.addEventListener("DOMContentLoaded", async () => {
+            const products = await fetchData();
             populateCategories(products);
             populateProducts(products);
         });
