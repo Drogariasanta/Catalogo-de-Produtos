@@ -15,7 +15,7 @@
         }
         header {
             background-color: white;
-            padding: 20px;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center; /* Centraliza o conteúdo */
@@ -25,22 +25,14 @@
         header img {
             width: 100%;
             object-fit: cover;
-            height: 200px; /* Ajusta a altura da imagem */
+            height: 200px; /* Altura ajustada */
         }
         header h1 {
             font-size: 2em;
             color: #43a047; /* Cor verde */
             margin: 0;
             position: absolute;
-        }
-        .contact {
-            font-size: 1.2em;
-            color: #388e3c;
-            text-decoration: none;
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            pointer-events: none; /* Impede que o número seja clicável */
+            text-align: center;
         }
         nav {
             text-align: center;
@@ -185,7 +177,6 @@
     <header>
         <img src="https://i.imgur.com/kg4nNxF.jpeg" alt="Logo Drogaria Santa Maria">
         <h1>Todos os Produtos</h1>
-        <span class="contact">Telefone: 553534703859</span>
     </header>
 
     <nav>
@@ -259,7 +250,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Telefone: 35 34703859</a>
                             </div>
                         </div>
                     `;
