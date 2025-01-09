@@ -156,24 +156,41 @@
         /* Responsividade */
         @media (max-width: 768px) {
             header {
-                flex-direction: column;
+                flex-direction: row;  /* Mantenha a imagem e o texto ao lado no celular */
                 height: auto;
-                text-align: center;
+                text-align: left;
             }
+
+            header img {
+                margin-right: 20px; /* Espaço entre a imagem e o texto */
+            }
+
             header h1 {
-                margin: 10px 0;
+                font-size: 1.5em;
             }
+
+            header .contact-info {
+                margin-left: 10px;
+            }
+
             .product {
                 flex: 1 1 calc(50% - 40px);
             }
         }
 
         @media (max-width: 480px) {
+            header {
+                flex-direction: column;  /* Alinha a imagem em cima do texto no celular */
+                text-align: center;
+            }
+
+            header img {
+                margin-bottom: 10px;
+                max-height: 100%;  /* Manter o tamanho da imagem sem redução */
+            }
+
             .product {
                 flex: 1 1 calc(100% - 40px);
-            }
-            header img {
-                max-width: 120px;
             }
             nav select {
                 font-size: 0.9em;
@@ -260,10 +277,9 @@
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
                             <h3>${product["Nome do Produto"]}</h3>
                             <p>${product["Descrição do Produto"]}</p>
-                            <div class="price">${product["Preço"]}</div>
+                            <div class="price">R$ ${product["Preço"]}</div>
                             <div class="button-group">
-                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
+                                <a href="https://wa.me/553534703859?text=Oi,%20quero%20comprar%20o%20produto%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact">Entrar em Contato</a>
                             </div>
                         </div>
                     `;
@@ -272,46 +288,17 @@
             });
         }
 
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            alert(`${name} foi adicionado ao carrinho!`);
-        }
-
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Seu carrinho está vazio.");
-            } else {
-                const name = prompt("Digite seu nome:");
-                const paymentMethod = prompt("Digite a forma de pagamento:");
-
-                let cartContent = `Nome: ${name}\nForma de Pagamento: ${paymentMethod}\nItens do carrinho:\n`;
-                let total = 0;
-
-                cart.forEach(item => {
-                    cartContent += `- ${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
-                });
-                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
-
-                const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
-                window.open(cartLink, "_blank");
-            }
-        }
-
         function filterByCategory() {
-            const selectedCategory = document.getElementById("categoryFilter").value;
-            const products = document.querySelectorAll(".product");
-
-            products.forEach(product => {
-                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
-                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
-                    ? "block"
-                    : "none";
+            const category = document.getElementById("categoryFilter").value;
+            fetchData().then(products => {
+                if (category !== "todos") {
+                    products = products.filter(p => p["Categoria"] === category);
+                    document.getElementById("categoryTitle").innerText = category;
+                } else {
+                    document.getElementById("categoryTitle").innerText = "Todos os Produtos";
+                }
+                populateProducts(products);
             });
-
-            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
-                ? "Todos os Produtos"
-                : selectedCategory;
         }
 
         fetchData().then(products => {
