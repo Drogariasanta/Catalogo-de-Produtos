@@ -18,11 +18,12 @@
             padding: 0;
             text-align: center;
             position: relative;
+            height: 200px; /* Cabeçalho menor */
         }
         header img {
             width: 100%; /* Imagem de cabo a rabo */
             object-fit: cover;
-            height: auto;
+            height: 100%;
         }
         .contact {
             font-size: 1.2em;
@@ -30,10 +31,8 @@
             text-decoration: none;
             position: absolute;
             right: 20px;
-            top: 20px;
-        }
-        .contact:hover {
-            text-decoration: underline;
+            top: 10px;
+            pointer-events: none; /* Impede que o número seja clicável */
         }
         nav {
             text-align: center;
@@ -162,7 +161,7 @@
                 flex: 1 1 calc(100% - 40px);
             }
             header {
-                padding: 15px;
+                height: 150px;
             }
             nav select {
                 font-size: 0.9em;
@@ -177,7 +176,7 @@
 <body>
     <header>
         <img src="https://i.imgur.com/kg4nNxF_d.webp?maxwidth=760&fidelity=grand" alt="Logo Drogaria Santa Maria">
-        <div class="contact" style="color: #388e3c;">Contato: (53) 5347-0385</div>
+        <div class="contact">Contato: (53) 5347-0385</div>
     </header>
 
     <nav>
