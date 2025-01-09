@@ -18,13 +18,24 @@
             padding: 20px;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centraliza o conteúdo */
+            justify-content: space-between; /* Ajusta o layout para o número no canto */
             text-align: center;
         }
         header img {
-            max-height: 80px; /* Limita a altura da imagem */
+            max-height: 120px; /* Aumenta o tamanho da logo */
             object-fit: contain;
             margin-right: 15px;
+        }
+        .contact {
+            font-size: 1.2em;
+            color: #388e3c;
+            text-decoration: none;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        .contact:hover {
+            text-decoration: underline;
         }
         nav {
             text-align: center;
@@ -168,6 +179,7 @@
 <body>
     <header>
         <img src="https://i.imgur.com/kg4nNxF_d.webp?maxwidth=760&fidelity=grand" alt="Logo Drogaria Santa Maria">
+        <a href="https://wa.me/553534703859" class="contact">Contato: (53) 5347-0385</a>
     </header>
 
     <nav>
