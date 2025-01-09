@@ -23,8 +23,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header img {
-            max-height: 100%;
-            max-width: 250px;
+            height: 100%;
+            width: auto; /* Manter a proporção da imagem */
             object-fit: contain;
         }
         header h1 {
@@ -163,6 +163,8 @@
 
             header img {
                 margin-right: 20px; /* Espaço entre imagem e título */
+                height: 80%; /* Ajuste de altura proporcional */
+                width: auto; /* Garantir que a proporção da imagem seja mantida */
             }
 
             header h1 {
@@ -187,8 +189,8 @@
 
             header img {
                 margin-right: 10px;
-                max-height: 100%;  /* Garantir que a imagem não aumente além do necessário */
-                max-width: 120px;  /* Ajuste para melhor exibição no celular */
+                height: 60%;  /* Ajuste de altura proporcional */
+                width: auto;  /* Garantir que a proporção da imagem seja mantida */
             }
 
             header h1 {
