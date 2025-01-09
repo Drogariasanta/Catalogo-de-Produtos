@@ -19,12 +19,12 @@
             justify-content: space-between;
             background-color: white;
             padding: 10px 20px;
-            height: 120px; /* Altura ajustada */
+            height: 120px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header img {
-            max-height: 100%; /* A imagem ocupará a altura do cabeçalho */
-            max-width: 150px; /* Limite para largura */
+            max-height: 100%;
+            max-width: 150px;
             object-fit: contain;
         }
         header h1 {
@@ -213,7 +213,111 @@
     <button id="cartButton" onclick="viewCart()">Ver Carrinho</button>
 
     <script>
-        // JavaScript permanece igual ao fornecido anteriormente.
+        const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
+
+        let cart = [];
+
+        async function fetchData() {
+            const response = await fetch(spreadsheetUrl);
+            const data = await response.text();
+            return parseCSV(data);
+        }
+
+        function parseCSV(data) {
+            const rows = data.split("\n");
+            const headers = rows[0].split(",");
+            return rows.slice(1).map(row => {
+                const values = row.split(",");
+                return headers.reduce((acc, header, index) => {
+                    acc[header.trim()] = values[index]?.trim();
+                    return acc;
+                }, {});
+            });
+        }
+
+        function populateCategories(products) {
+            const categoryFilter = document.getElementById("categoryFilter");
+            const uniqueCategories = new Set(products.map(p => p["Categoria"]));
+
+            categoryFilter.innerHTML = `<option value="todos">Todos</option>`;
+
+            uniqueCategories.forEach(category => {
+                if (category) {
+                    categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+                }
+            });
+        }
+
+        function populateProducts(products) {
+            const productContainer = document.getElementById("productContainer");
+            productContainer.innerHTML = "";
+
+            products.forEach(product => {
+                if (product["Nome do Produto"] && product["Categoria"]) {
+                    const categoryClass = product["Categoria"].toLowerCase().replace(/\s+/g, '-');
+                    const productElement = `
+                        <div class="product ${categoryClass}">
+                            <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
+                            <h3>${product["Nome do Produto"]}</h3>
+                            <p>${product["Descrição do Produto"]}</p>
+                            <div class="price">${product["Preço"]}</div>
+                            <div class="button-group">
+                                <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
+                            </div>
+                        </div>
+                    `;
+                    productContainer.innerHTML += productElement;
+                }
+            });
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            alert(`${name} foi adicionado ao carrinho!`);
+        }
+
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio.");
+            } else {
+                const name = prompt("Digite seu nome:");
+                const paymentMethod = prompt("Digite a forma de pagamento:");
+
+                let cartContent = `Nome: ${name}\nForma de Pagamento: ${paymentMethod}\nItens do carrinho:\n`;
+                let total = 0;
+
+                cart.forEach(item => {
+                    cartContent += `- ${item.name} - ${item.price}\n`;
+                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
+                });
+                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
+
+                const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
+                window.open(cartLink, "_blank");
+            }
+        }
+
+        function filterByCategory() {
+            const selectedCategory = document.getElementById("categoryFilter").value;
+            const products = document.querySelectorAll(".product");
+
+            products.forEach(product => {
+                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
+                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
+                    ? "block"
+                    : "none";
+            });
+
+            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
+                ? "Todos os Produtos"
+                : selectedCategory;
+        }
+
+        fetchData().then(products => {
+            populateCategories(products);
+            populateProducts(products);
+        });
     </script>
 </body>
 </html>
