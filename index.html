@@ -21,12 +21,12 @@
             justify-content: center; /* Centraliza o conteúdo */
             text-align: center;
             position: relative;
-            height: 180px; /* Altura do cabeçalho reduzida no PC */
+            height: 250px; /* Altura do cabeçalho aumentada */
         }
         header img {
-            width: 330%; /* Aumenta um pouco a imagem no cabeçalho */
+            width: 400%; /* Aumenta ainda mais a imagem do cabeçalho */
             object-fit: contain;
-            height: 150px; /* Altura ajustada */
+            height: 200px; /* Ajuste para imagem maior */
         }
         header h1 {
             font-size: 2em;
@@ -153,7 +153,7 @@
         /* Responsividade */
         @media (max-width: 768px) {
             header {
-                height: 150px; /* Diminuir altura do cabeçalho no celular */
+                height: 200px; /* Diminuir altura do cabeçalho no celular */
             }
             .product {
                 flex: 1 1 calc(50% - 40px);
@@ -162,7 +162,7 @@
 
         @media (max-width: 480px) {
             header {
-                height: 130px; /* Ajuste adicional para celulares menores */
+                height: 150px; /* Ajuste adicional para celulares menores */
             }
             nav select {
                 font-size: 0.9em;
@@ -277,7 +277,13 @@
                     cartContent += `- ${item.name} - ${item.price}\n`;
                     total += parseFloat(item.price.replace("R$", "").replace(",", "."));
                 });
+
                 cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
+
+                const name = prompt("Informe seu nome:");
+                const paymentMethod = prompt("Informe sua forma de pagamento:");
+
+                cartContent += `\n\nCliente: ${name}\nForma de pagamento: ${paymentMethod}`;
 
                 const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
                 window.open(cartLink, "_blank");
