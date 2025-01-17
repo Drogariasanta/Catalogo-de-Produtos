@@ -239,7 +239,7 @@
                             <div class="price">${product["Preço"]}</div>
                             <div class="button-group">
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
-                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
+                                <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
                         </div>`;
                     productContainer.innerHTML += productElement;
@@ -249,29 +249,47 @@
 
         function addToCart(name, price) {
             cart.push({ name, price });
-            alert(`${name} foi adicionado ao seu carrinho.`);
+            alert(`${name} foi adicionado ao carrinho!`);
         }
 
         function viewCart() {
             if (cart.length === 0) {
                 alert("Seu carrinho está vazio.");
             } else {
-                const cartDetails = cart.map(item => `${item.name} - ${item.price}`).join("\n");
-                alert("Carrinho:\n" + cartDetails);
-            }
-        }
+                let cartContent = "Itens no carrinho:\n";
+                let total = 0;
+                cart.forEach(item => {
+                    cartContent += `${item.name} - ${item.price}\n`;
+                    total += parseFloat(item.price.replace("R$", "").trim());
+                });
 
-        function filterByCategory() {
-            const category = document.getElementById("categoryFilter").value;
-            const filteredProducts = category === "Todos" ? allProducts : allProducts.filter(p => p["Categoria"] === category);
-            populateProducts(filteredProducts);
-            document.getElementById("categoryTitle").textContent = category === "Todos" ? "Todos os Produtos" : category;
+                const customerName = prompt("Digite seu nome:");
+                const paymentMethod = prompt("Digite a forma de pagamento:");
+                const address = prompt("Digite seu endereço:");
+
+                const orderMessage = `Pedido de ${customerName}:\n${cartContent}Total: R$ ${total}\nForma de pagamento: ${paymentMethod}\nEndereço: ${address}`;
+
+                const whatsappUrl = `https://wa.me/553534703859?text=${encodeURIComponent(orderMessage)}`;
+                window.open(whatsappUrl, "_blank");
+            }
         }
 
         async function init() {
             const products = await fetchData();
             populateCategories(products);
-            populateProducts(products); 
+            populateProducts(products);
+        }
+
+        function filterByCategory() {
+            const selectedCategory = document.getElementById("categoryFilter").value;
+            document.getElementById("categoryTitle").textContent = selectedCategory === "Todos" ? "Todos os Produtos" : selectedCategory;
+
+            // Filtre os produtos armazenados
+            const filteredProducts = selectedCategory === "Todos" 
+                ? allProducts 
+                : allProducts.filter(product => product["Categoria"] === selectedCategory);
+
+            populateProducts(filteredProducts);
         }
 
         init();
