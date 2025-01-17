@@ -209,17 +209,18 @@
             });
         }
 
-        function populateCategories(products) {
-            const categoryFilter = document.getElementById("categoryFilter");
-            const uniqueCategories = new Set(products.map(p => p["Categoria"]));
-            
-            // Categorias ordenadas em ordem alfabética, mas "Todos" em primeiro
-            const sortedCategories = ["todos", ...Array.from(uniqueCategories).sort()];
+      function populateCategories(products) {
+    const categoryFilter = document.getElementById("categoryFilter");
+    const uniqueCategories = new Set(products.map(p => p["Categoria"]).filter(c => c)); // Remove valores vazios ou undefined
+    
+    // Categorias ordenadas em ordem alfabética, mas "Todos" em primeiro
+    const sortedCategories = ["Todos", ...Array.from(uniqueCategories).sort()];
 
-            sortedCategories.forEach(category => {
-                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
-            });
-        }
+    sortedCategories.forEach(category => {
+        categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+}
+
 
         function populateProducts(products) {
             const productContainer = document.getElementById("productContainer");
@@ -279,10 +280,10 @@
 
         function filterByCategory() {
             const selectedCategory = document.getElementById("categoryFilter").value;
-            document.getElementById("categoryTitle").textContent = selectedCategory === "todos" ? "Todos os Produtos" : selectedCategory;
+            document.getElementById("categoryTitle").textContent = selectedCategory === "Todos" ? "Todos os Produtos" : selectedCategory;
 
             fetchData().then(products => {
-                const filteredProducts = selectedCategory === "todos" 
+                const filteredProducts = selectedCategory === "Todos" 
                     ? products 
                     : products.filter(product => product["Categoria"] === selectedCategory);
 
