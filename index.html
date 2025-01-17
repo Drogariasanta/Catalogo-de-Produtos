@@ -188,8 +188,8 @@
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
 
-        let allProducts = [];
         let cart = [];
+        let allProducts = [];
 
         async function fetchData() {
             if (allProducts.length === 0) {
@@ -249,29 +249,32 @@
 
         function addToCart(name, price) {
             cart.push({ name, price });
-            alert(`${name} foi adicionado ao carrinho!`);
-        }
-
-        function filterByCategory() {
-            const selectedCategory = document.getElementById("categoryFilter").value;
-            if (selectedCategory === "Todos") {
-                populateProducts(allProducts);
-            } else {
-                const filteredProducts = allProducts.filter(product => product["Categoria"] === selectedCategory);
-                populateProducts(filteredProducts);
-            }
-            document.getElementById("categoryTitle").textContent = selectedCategory;
+            alert(`${name} foi adicionado ao seu carrinho.`);
         }
 
         function viewCart() {
-            alert(`Itens no Carrinho:\n${cart.map(item => `${item.name} - ${item.price}`).join("\n")}`);
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio.");
+            } else {
+                const cartDetails = cart.map(item => `${item.name} - ${item.price}`).join("\n");
+                alert("Carrinho:\n" + cartDetails);
+            }
         }
 
-        // Inicialize a página
-        fetchData().then(products => {
+        function filterByCategory() {
+            const category = document.getElementById("categoryFilter").value;
+            const filteredProducts = category === "Todos" ? allProducts : allProducts.filter(p => p["Categoria"] === category);
+            populateProducts(filteredProducts);
+            document.getElementById("categoryTitle").textContent = category === "Todos" ? "Todos os Produtos" : category;
+        }
+
+        async function init() {
+            const products = await fetchData();
             populateCategories(products);
-            populateProducts(products);
-        });
+            populateProducts(products); 
+        }
+
+        init();
     </script>
 </body>
 </html>
