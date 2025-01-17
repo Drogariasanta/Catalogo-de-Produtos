@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,7 +15,7 @@
             padding: 0;
         }
         header {
-            background-color: #f7f7f7; /* Cor do fundo alterada */
+            background-color: #f7f7f7;
             padding: 0;
             display: flex;
             align-items: center;
@@ -24,13 +25,13 @@
             height: 250px; /* Altura do cabeçalho aumentada */
         }
         header img {
-            width: 500%; /* Aumenta ainda mais a imagem do cabeçalho */
+            width: 500%;
             object-fit: contain;
-            height: 280px; /* Ajuste para imagem maior */
+            height: 280px;
         }
         header h1 {
             font-size: 2em;
-            color: #43a047; /* Cor verde */
+            color: #43a047; 
             margin: 0;
             position: absolute;
             text-align: center;
@@ -65,11 +66,11 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 15px;
             text-align: center;
-            flex: 1 1 calc(33.33% - 40px);
+            flex: 1 1 calc(33.33% - 40px); /* Flexível para 3 colunas */
             box-sizing: border-box;
-            min-height: 350px;
+            min-height: 250px; /* Tamanho fixo reduzido */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -85,6 +86,7 @@
             object-fit: contain;
             border-radius: 10px;
             margin-bottom: 10px;
+            max-height: 150px;
         }
         .product h3 {
             font-size: 1.1em;
@@ -109,7 +111,7 @@
             background-color: #2e7d32;
             color: white;
             text-decoration: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
             font-size: 1em;
             margin: 5px;
@@ -149,30 +151,12 @@
             padding: 15px 0;
             font-size: 0.9em;
         }
-
-        /* Responsividade */
         @media (max-width: 768px) {
-            header {
-                height: 200px; /* Diminuir altura do cabeçalho no celular */
+            #productContainer {
+                flex-direction: column; /* Exibe os produtos em uma coluna no celular */
             }
             .product {
-                flex: 1 1 calc(50% - 40px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                height: 150px; /* Ajuste adicional para celulares menores */
-            }
-            nav select {
-                font-size: 0.9em;
-                padding: 8px;
-            }
-            .container {
-                padding: 10px;
-            }
-            .product {
-                flex: 1 1 calc(100% - 40px);
+                flex: 1 1 100%; /* Ocupa toda a largura no celular */
             }
         }
     </style>
@@ -228,13 +212,12 @@
         function populateCategories(products) {
             const categoryFilter = document.getElementById("categoryFilter");
             const uniqueCategories = new Set(products.map(p => p["Categoria"]));
+            
+            // Categorias ordenadas em ordem alfabética, mas "Todos" em primeiro
+            const sortedCategories = ["todos", ...Array.from(uniqueCategories).sort()];
 
-            categoryFilter.innerHTML = `<option value="todos">Todos</option>`;
-
-            uniqueCategories.forEach(category => {
-                if (category) {
-                    categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
-                }
+            sortedCategories.forEach(category => {
+                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
             });
         }
 
@@ -245,8 +228,8 @@
             products.forEach(product => {
                 if (product["Nome do Produto"] && product["Categoria"]) {
                     const categoryClass = product["Categoria"].toLowerCase().replace(/\s+/g, '-');
-                    const productElement = `
-                        <div class="product ${categoryClass}">
+                    const productElement = 
+                        `<div class="product ${categoryClass}">
                             <img src="${product["Imagem"]}" alt="${product["Nome do Produto"]}">
                             <h3>${product["Nome do Produto"]}</h3>
                             <p>${product["Descrição do Produto"]}</p>
@@ -255,8 +238,7 @@
                                 <button class="btn" onclick="addToCart('${product["Nome do Produto"]}', '${product["Preço"]}')">Adicionar ao Carrinho</button>
                                 <a href="https://wa.me/553534703859?text=Gostaria%20de%20mais%20informações%20sobre%20${encodeURIComponent(product["Nome do Produto"])}" class="btn contact" target="_blank">Entrar em Contato</a>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                     productContainer.innerHTML += productElement;
                 }
             });
@@ -274,42 +256,41 @@
                 let cartContent = "Itens no carrinho:\n";
                 let total = 0;
                 cart.forEach(item => {
-                    cartContent += `- ${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").replace(",", "."));
+                    cartContent += `${item.name} - ${item.price}\n`;
+                    total += parseFloat(item.price.replace("R$", "").trim());
                 });
 
-                cartContent += `\nTotal: R$ ${total.toFixed(2)}`;
+                const customerName = prompt("Digite seu nome:");
+                const paymentMethod = prompt("Digite a forma de pagamento:");
+                const address = prompt("Digite seu endereço:");
 
-                const name = prompt("Informe seu nome:");
-                const paymentMethod = prompt("Informe sua forma de pagamento:");
+                const orderMessage = `Pedido de ${customerName}:\n${cartContent}Total: R$ ${total}\nForma de pagamento: ${paymentMethod}\nEndereço: ${address}`;
 
-                cartContent += `\n\nCliente: ${name}\nForma de pagamento: ${paymentMethod}`;
-
-                const cartLink = `https://wa.me/553534703859?text=${encodeURIComponent(cartContent)}`;
-                window.open(cartLink, "_blank");
+                const whatsappUrl = `https://wa.me/553534703859?text=${encodeURIComponent(orderMessage)}`;
+                window.open(whatsappUrl, "_blank");
             }
+        }
+
+        async function init() {
+            const products = await fetchData();
+            populateCategories(products);
+            populateProducts(products);
         }
 
         function filterByCategory() {
             const selectedCategory = document.getElementById("categoryFilter").value;
-            const products = document.querySelectorAll(".product");
+            document.getElementById("categoryTitle").textContent = selectedCategory === "todos" ? "Todos os Produtos" : selectedCategory;
 
-            products.forEach(product => {
-                const categoryClass = selectedCategory.toLowerCase().replace(/\s+/g, '-');
-                product.style.display = selectedCategory === "todos" || product.classList.contains(categoryClass)
-                    ? "block"
-                    : "none";
+            fetchData().then(products => {
+                const filteredProducts = selectedCategory === "todos" 
+                    ? products 
+                    : products.filter(product => product["Categoria"] === selectedCategory);
+
+                populateProducts(filteredProducts);
             });
-
-            document.getElementById("categoryTitle").textContent = selectedCategory === "todos"
-                ? "Todos os Produtos"
-                : selectedCategory;
         }
 
-        fetchData().then(products => {
-            populateCategories(products);
-            populateProducts(products);
-        });
+        init();
     </script>
 </body>
 </html>
