@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -189,12 +188,16 @@
     <script>
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQulmY7T7U6PseDk2kouwSzi7E_Fp_i8rxwuLawd4I77MPQvLP3PRGtWWE5_Oz0_MoPyQ2GqQYppGL-/pub?output=csv";
 
+        let allProducts = [];
         let cart = [];
 
         async function fetchData() {
-            const response = await fetch(spreadsheetUrl);
-            const data = await response.text();
-            return parseCSV(data);
+            if (allProducts.length === 0) {
+                const response = await fetch(spreadsheetUrl);
+                const data = await response.text();
+                allProducts = parseCSV(data); // Armazene os produtos
+            }
+            return allProducts;
         }
 
         function parseCSV(data) {
@@ -209,18 +212,17 @@
             });
         }
 
-      function populateCategories(products) {
-    const categoryFilter = document.getElementById("categoryFilter");
-    const uniqueCategories = new Set(products.map(p => p["Categoria"]).filter(c => c)); // Remove valores vazios ou undefined
-    
-    // Categorias ordenadas em ordem alfabética, mas "Todos" em primeiro
-    const sortedCategories = ["Todos", ...Array.from(uniqueCategories).sort()];
+        function populateCategories(products) {
+            const categoryFilter = document.getElementById("categoryFilter");
+            const uniqueCategories = new Set(products.map(p => p["Categoria"]).filter(c => c)); // Remove valores vazios ou undefined
+            
+            // Categorias ordenadas em ordem alfabética, mas "Todos" em primeiro
+            const sortedCategories = ["Todos", ...Array.from(uniqueCategories).sort()];
 
-    sortedCategories.forEach(category => {
-        categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
-    });
-}
-
+            sortedCategories.forEach(category => {
+                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+            });
+        }
 
         function populateProducts(products) {
             const productContainer = document.getElementById("productContainer");
@@ -250,48 +252,26 @@
             alert(`${name} foi adicionado ao carrinho!`);
         }
 
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Seu carrinho está vazio.");
-            } else {
-                let cartContent = "Itens no carrinho:\n";
-                let total = 0;
-                cart.forEach(item => {
-                    cartContent += `${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").trim());
-                });
-
-                const customerName = prompt("Digite seu nome:");
-                const paymentMethod = prompt("Digite a forma de pagamento:");
-                const address = prompt("Digite seu endereço:");
-
-                const orderMessage = `Pedido de ${customerName}:\n${cartContent}Total: R$ ${total}\nForma de pagamento: ${paymentMethod}\nEndereço: ${address}`;
-
-                const whatsappUrl = `https://wa.me/553534703859?text=${encodeURIComponent(orderMessage)}`;
-                window.open(whatsappUrl, "_blank");
-            }
-        }
-
-        async function init() {
-            const products = await fetchData();
-            populateCategories(products);
-            populateProducts(products);
-        }
-
         function filterByCategory() {
             const selectedCategory = document.getElementById("categoryFilter").value;
-            document.getElementById("categoryTitle").textContent = selectedCategory === "Todos" ? "Todos os Produtos" : selectedCategory;
-
-            fetchData().then(products => {
-                const filteredProducts = selectedCategory === "Todos" 
-                    ? products 
-                    : products.filter(product => product["Categoria"] === selectedCategory);
-
+            if (selectedCategory === "Todos") {
+                populateProducts(allProducts);
+            } else {
+                const filteredProducts = allProducts.filter(product => product["Categoria"] === selectedCategory);
                 populateProducts(filteredProducts);
-            });
+            }
+            document.getElementById("categoryTitle").textContent = selectedCategory;
         }
 
-        init();
+        function viewCart() {
+            alert(`Itens no Carrinho:\n${cart.map(item => `${item.name} - ${item.price}`).join("\n")}`);
+        }
+
+        // Inicialize a página
+        fetchData().then(products => {
+            populateCategories(products);
+            populateProducts(products);
+        });
     </script>
 </body>
 </html>
