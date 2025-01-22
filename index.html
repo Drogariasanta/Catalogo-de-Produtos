@@ -252,27 +252,30 @@
             alert(`${name} foi adicionado ao carrinho!`);
         }
 
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Seu carrinho está vazio.");
-            } else {
-                let cartContent = "Itens no carrinho:\n";
-                let total = 0;
-                cart.forEach(item => {
-                    cartContent += `${item.name} - ${item.price}\n`;
-                    total += parseFloat(item.price.replace("R$", "").trim());
-                });
+function viewCart() {
+    if (cart.length === 0) {
+        alert("Seu carrinho está vazio.");
+    } else {
+        let cartContent = "Itens no carrinho:\n";
+        let total = 0;
+        cart.forEach(item => {
+            cartContent += `${item.name} - ${item.price}\n`;
+            total += parseFloat(item.price.replace("R$", "").trim());
+        });
 
-                const customerName = prompt("Digite seu nome:");
-                const paymentMethod = prompt("Digite a forma de pagamento:");
-                const address = prompt("Digite seu endereço:");
+        // Formata o total com duas casas decimais
+        total = total.toFixed(2);
 
-                const orderMessage = `Pedido de ${customerName}:\n${cartContent}Total: R$ ${total}\nForma de pagamento: ${paymentMethod}\nEndereço: ${address}`;
+        const customerName = prompt("Digite seu nome:");
+        const paymentMethod = prompt("Digite a forma de pagamento:");
+        const address = prompt("Digite seu endereço:");
 
-                const whatsappUrl = `https://wa.me/553534703859?text=${encodeURIComponent(orderMessage)}`;
-                window.open(whatsappUrl, "_blank");
-            }
-        }
+        const orderMessage = `Pedido de ${customerName}:\n${cartContent}Total: R$ ${total}\nForma de pagamento: ${paymentMethod}\nEndereço: ${address}`;
+
+        const whatsappUrl = `https://wa.me/553534703859?text=${encodeURIComponent(orderMessage)}`;
+        window.open(whatsappUrl, "_blank");
+    }
+}
 
         async function init() {
             const products = await fetchData();
